@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Del Click a la Conciencia</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="memory-game">
+  <div class="memory-game__container">
+    <header class="memory-game__header">
+      <h1 class="memory-game__title">Del Click a la Consciencia</h1>
+      <h2 class="memory-game__subtitle">Juego de memoria</h2>
+    </header>
+
+    <main class="memory-game__main">
+      <!-- Contadores a la izquierda -->
+      <aside class="memory-game__sidebar memory-game__sidebar--left">
+        <div class="memory-game__stats">
+          <span class="memory-game__counter memory-game__counter--visits">
+            Visitas: <span id="visitCount">0</span>
+          </span>
+          <span class="memory-game__counter memory-game__counter--wins">
+            Victorias: <span id="winCount">0</span>
+          </span>
+          <span class="memory-game__counter memory-game__counter--time">
+            Tiempo: <span id="timeCounter">00:00:00</span>
+          </span>
+        </div>
+      </aside>
+
+      <!-- Tablero al centro -->
+      <section class="memory-board" id="gameBoard"></section>
+
+      <!-- Botones a la derecha -->
+      <aside class="memory-game__sidebar memory-game__sidebar--right">
+        <div class="memory-game__controls">
+          <button class="memory-game__start-button" id="startButton">Iniciar</button>
+          <button class="memory-game__reset-button" id="resetButton">Reiniciar Juego</button>
+          <button class="memory-game__tabla-button" id="tablaButton">Tabla de Tiempos</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+  <footer class="memory-game__footer">
+    <p class="memory-game__copyright">
+      © 2025 Montero Lucas Damián. Todos los derechos reservados.
+    </p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
