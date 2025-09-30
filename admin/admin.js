@@ -26,12 +26,5 @@ document.getElementById('resetAll').onclick = () => {
     updateCounters();
 };
 
-document.getElementById('volverJuego').onclick = () => {
-    localStorage.setItem('memoryGameWins', 0);
-    statusMsg.textContent = 'Contador de victorias reseteado.';
-    updateCounters();
-    window.location.href = 'index.html'; // Redirección al index
-};
-
 // Inicializar valores al cargar
 updateCounters();

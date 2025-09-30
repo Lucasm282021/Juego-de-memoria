@@ -38,6 +38,17 @@ function updateVisitCount() {
     visitCountEl.textContent = visits;
 }
 
+// === TIEMPOS DE GANADORES ===
+function guardarTiempoGanador(tiempo) {
+    let tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
+    tiempos.push(tiempo);
+    localStorage.setItem('memoryGameTiempos', JSON.stringify(tiempos));
+}
+
+function obtenerTiemposGanadores() {
+    return JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
+}
+
 function updateWinCount() {
     let wins = localStorage.getItem('memoryGameWins') || 0;
     wins++;
@@ -157,6 +168,7 @@ function flipCard(card) {
         }
         setTimeout(() => {
             const tiempoFinal = formatTime(millisecondsElapsed);
+            guardarTiempoGanador(tiempoFinal);
             alert(`¡Victoria! Has emparejado todos los logos.\nTiempo logrado: ${tiempoFinal}`);
         }, 300);
         }
@@ -173,6 +185,30 @@ function flipCard(card) {
 }
 
 // === EVENTOS ===
+const tablaButton = document.getElementById('tablaButton');
+const tablaTiemposModal = document.getElementById('tablaTiemposModal');
+const cerrarTablaTiempos = document.getElementById('cerrarTablaTiempos');
+const tablaTiempos = document.getElementById('tablaTiempos').getElementsByTagName('tbody')[0];
+
+tablaButton.addEventListener('click', () => {
+    // Mostrar la tabla modal
+    const tiempos = obtenerTiemposGanadores();
+    tablaTiempos.innerHTML = '';
+    if (tiempos.length === 0) {
+        tablaTiempos.innerHTML = '<tr><td colspan="2">No hay tiempos registrados.</td></tr>';
+    } else {
+        tiempos.forEach((t, i) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${i+1}</td><td>${t}</td>`;
+            tablaTiempos.appendChild(row);
+        });
+    }
+    tablaTiemposModal.style.display = 'flex';
+});
+
+cerrarTablaTiempos.addEventListener('click', () => {
+    tablaTiemposModal.style.display = 'none';
+});
 startButton.addEventListener('click', () => {
     resetTimer();
     startTimer();
@@ -201,6 +237,61 @@ resetButton.addEventListener('click', () => {
 });
 
 // === INICIO ===
-updateVisitCount();
-loadCounters();
-initGame(); //← no se llama automáticamente
+
+// === LOGIN CON QR ===
+const loginModal = document.getElementById('loginModal');
+const qrCanvas = document.getElementById('qrCanvas');
+const codigoForm = document.getElementById('codigoForm');
+const codigoInput = document.getElementById('codigoInput');
+const loginMsg = document.getElementById('loginMsg');
+
+function mostrarQR() {
+    // Generar QR con la URL del formulario
+    const url = window.location.origin + window.location.pathname.replace('index.html','login.html');
+    const qr = new QRious({
+        element: qrCanvas,
+        value: url,
+        size: 180
+    });
+}
+
+function loginHabilitado() {
+    return localStorage.getItem('memoryGameLoginToken') && localStorage.getItem('memoryGameUser');
+}
+
+function habilitarJuego() {
+    loginModal.style.display = 'none';
+    updateVisitCount();
+    loadCounters();
+    initGame();
+    // Habilitar botones
+    startButton.disabled = false;
+    resetButton.disabled = false;
+    tablaButton.disabled = false;
+}
+
+function deshabilitarJuego() {
+    loginModal.style.display = 'flex';
+    startButton.disabled = true;
+    resetButton.disabled = true;
+    tablaButton.disabled = true;
+}
+
+if(loginHabilitado()) {
+    habilitarJuego();
+} else {
+    deshabilitarJuego();
+    mostrarQR();
+}
+
+codigoForm.onsubmit = function(e) {
+    e.preventDefault();
+    const tokenIngresado = codigoInput.value.trim();
+    const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
+    if(tokenIngresado && user.token === tokenIngresado) {
+        habilitarJuego();
+        loginMsg.textContent = '¡Acceso concedido!';
+    } else {
+        loginMsg.textContent = 'Código incorrecto.';
+    }
+};

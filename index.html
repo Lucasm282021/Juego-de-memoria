@@ -47,6 +47,32 @@
       © 2025 Montero Lucas Damián. Todos los derechos reservados.
     </p>
   </footer>
+  <div id="tablaTiemposModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div class="modal-tiempos-panel">
+      <h3 class="modal-tiempos-titulo">Tabla de Tiempos</h3>
+      <table id="tablaTiempos" class="modal-tiempos-tabla">
+        <thead>
+          <tr><th>#</th><th>Tiempo</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button id="cerrarTablaTiempos" class="modal-tiempos-cerrar">Cerrar</button>
+    </div>
+  </div>
+  <!-- Modal de Login QR -->
+  <div id="loginModal" style="display:flex; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center;">
+    <div class="modal-tiempos-panel" style="max-width:350px;">
+      <h3 class="modal-tiempos-titulo">Acceso al Juego</h3>
+      <p>Escanea este QR con tu móvil para acceder:</p>
+      <canvas id="qrCanvas" style="margin:12px auto;"></canvas>
+      <form id="codigoForm">
+        <input type="text" id="codigoInput" placeholder="Código de acceso" required style="width:90%;margin:10px 0;">
+        <button type="submit" class="modal-tiempos-cerrar">Validar</button>
+      </form>
+      <div id="loginMsg" style="margin-top:10px;color:#2ecc40;"></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

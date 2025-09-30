@@ -1,3 +1,64 @@
+/* === MODAL TIEMPOS === */
+#tablaTiemposModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+.modal-tiempos-panel {
+    background: #fff;
+    max-width: 400px;
+    width: 90%;
+    margin: auto;
+    padding: 32px 24px 24px 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    border: none;
+    text-align: center;
+}
+.modal-tiempos-titulo {
+    margin-bottom: 24px;
+    color: #2d3a4a;
+    font-weight: 600;
+    font-size: 1.3em;
+}
+.modal-tiempos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+.modal-tiempos-tabla th, .modal-tiempos-tabla td {
+    border-bottom: 1px solid #e0eafc;
+    padding: 8px 0;
+    color: #2d3a4a;
+}
+.modal-tiempos-tabla th {
+    background: #f5f8ff;
+    font-weight: 500;
+}
+.modal-tiempos-cerrar {
+    margin-top: 12px;
+    padding: 10px 28px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #4f8cff;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+}
+.modal-tiempos-cerrar:hover {
+    background: #3466c2;
+    transform: translateY(-2px) scale(1.04);
+}
 :root {
     --color-bg-primary: #0f172a;
     --color-bg-secondary: #1e293b;
