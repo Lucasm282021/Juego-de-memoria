@@ -35,17 +35,73 @@ document.getElementById('resetVisits').onclick = () => resetCounter('memoryGameV
 document.getElementById('resetWins').onclick = () => resetCounter('memoryGameWins', 'victorias');
 document.getElementById('resetAll').onclick = resetAllCounters;
 
+// Borrar tabla de participantes
+document.getElementById('deleteTable').onclick = function() {
+  localStorage.removeItem('memoryGameTiempos');
+  showStatus('Tabla de participantes borrada.', 'success');
+  mostrarTablaParticipantes();
+};
+
+// Exportar tabla a Excel manualmente
+document.getElementById('exportExcel').onclick = exportarExcel;
+
+// Guardar tiempo de juego
+const gameTimeInput = document.getElementById('gameTime');
+const saveGameTimeBtn = document.getElementById('saveGameTime');
+// Cargar tiempo guardado al iniciar
+if(localStorage.getItem('memoryGameTime')) {
+  gameTimeInput.value = localStorage.getItem('memoryGameTime');
+}
+saveGameTimeBtn.onclick = function() {
+  let tiempo = parseInt(gameTimeInput.value);
+  if(isNaN(tiempo) || tiempo < 10 || tiempo > 300) {
+    showStatus('El tiempo debe estar entre 10 y 300 segundos.', 'error');
+    return;
+  }
+  localStorage.setItem('memoryGameTime', tiempo);
+  showStatus('Tiempo de juego actualizado a ' + tiempo + ' segundos.', 'success');
+};
+
+// Exportar tabla a Excel
+function exportarExcel() {
+  const tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
+  let csv = 'Nombre,Correo,Tiempo,Ganador\n';
+  tiempos.forEach((t) => {
+    csv += `${t.nombre || 'Desconocido'},${t.correo || '-'},${t.tiempo},Ganador\n`;
+  });
+  // Descargar archivo
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'resultados_memoria.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showStatus('Archivo Excel exportado correctamente.', 'success');
+}
+
+// Generar archivo Excel automáticamente al iniciar
+// La exportación solo se realiza al presionar el botón Exportar Excel
+// Actualizar la página admin cada vez que se inicia un nuevo juego
+window.addEventListener('storage', function(e) {
+  if (e.key === 'memoryGameTiempos') {
+    location.reload();
+  }
+});
+
 // === MOSTRAR TABLA DE PARTICIPANTES ===
 function mostrarTablaParticipantes() {
   tablaBody.innerHTML = '';
   const tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
   const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
 
-  tiempos.forEach(({ nombre, tiempo }) => {
+  tiempos.forEach(({ nombre, correo, tiempo }) => {
     tablaBody.innerHTML += `
       <tr>
         <td>${nombre || 'Desconocido'}</td>
-        <td>${user.correo || '-'}</td>
+        <td>${correo || '-'}</td>
         <td>${tiempo}</td>
         <td>Ganador</td>
       </tr>`;

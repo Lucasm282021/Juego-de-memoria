@@ -7,41 +7,60 @@
     <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
-    <main class="admin-panel">
+    <main class="admin-panel" role="main">
         <header class="admin-panel__header">
-        <h2>Panel de Administrador</h2>
+        <h1 class="admin-panel__title">Panel de Administrador</h1>
         </header>
 
-        <section class="admin-panel__counters">
-        <h3>Contadores</h3>
-        <div class="counters">
-            <p>Visitas: <span id="visitsCount">0</span></p>
-            <p>Victorias: <span id="winsCount">0</span></p>
+        <div class="admin-panel__layout" role="region" aria-label="Panel de control">
+        <!-- Acciones administrativas -->
+        <section class="admin-panel__actions" aria-labelledby="accionesTitulo">
+            <h2 id="accionesTitulo" class="admin-panel__section-title">Acciones</h2>
+            <div class="admin-panel__buttons">
+            <button id="resetVisits" type="button">Resetear Visitas</button>
+            <button id="resetWins" type="button">Resetear Victorias</button>
+            <button id="resetAll" type="button">Resetear Todo</button>
+            <button id="deleteTable" type="button">Borrar Tabla</button>
+            <button id="exportExcel" type="button">Exportar Tabla a Excel</button>
+            </div>
+            <fieldset class="admin-panel__game-time">
+            <legend>Tiempo de juego (segundos)</legend>
+            <label for="gameTime">Duración:</label>
+            <input type="number" id="gameTime" name="gameTime" min="10" max="300" value="30" />
+            <button id="saveGameTime" type="button">Guardar Tiempo</button>
+            </fieldset>
+        </section>
+
+        <!-- Contadores -->
+        <section class="admin-panel__counters" aria-labelledby="contadoresTitulo">
+            <h2 id="contadoresTitulo" class="admin-panel__section-title">Contadores</h2>
+            <ul class="admin-panel__stats">
+            <li>Visitas: <span id="visitsCount">0</span></li>
+            <li>Victorias: <span id="winsCount">0</span></li>
+            </ul>
+        </section>
+
+        <!-- Tabla de participantes -->
+        <section class="admin-panel__table" aria-labelledby="tablaTitulo">
+            <h2 id="tablaTitulo" class="admin-panel__section-title">Participantes y Tiempos</h2>
+            <div class="admin-panel__table-wrapper">
+            <table id="tablaParticipantes">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Tiempo</th>
+                    <th scope="col">Ganador</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </div>
+        </section>
         </div>
-        </section>
 
-        <section class="admin-panel__table">
-        <h3>Participantes y Tiempos</h3>
-        <table id="tablaParticipantes">
-            <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Tiempo</th>
-                <th>Ganador</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        </section>
-
-        <section class="admin-panel__actions">
-        <button id="resetVisits">Resetear Visitas</button>
-        <button id="resetWins">Resetear Victorias</button>
-        <button id="resetAll">Resetear Todo</button>
-        </section>
-
-        <div class="status" id="statusMsg" aria-live="polite"></div>
+        <!-- Mensaje de estado -->
+        <div class="admin-panel__status" id="statusMsg" aria-live="polite" role="status"></div>
     </main>
 
     <script src="admin.js"></script>

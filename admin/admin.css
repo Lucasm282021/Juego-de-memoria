@@ -1,120 +1,224 @@
-/* === PANTALLA COMPLETA Y CENTRADO === */
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #dbeafe 0%, #f0f9ff 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* === PANEL ADMINISTRADOR === */
-.admin-panel {
-    background: #ffffff;
-    max-width: 560px;
-    width: 92%;
-    padding: 40px 32px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    box-sizing: border-box;
-    border: 1px solid #e0eafc;
-}
-
-/* === HEADER === */
-.admin-panel__header h2 {
-    margin-bottom: 24px;
-    color: #1e293b;
+/* === TÍTULO PRINCIPAL === */
+.admin-panel__title {
+    font-size: 2rem;
     font-weight: 700;
-    font-size: 1.8rem;
+    color: #1e293b;
     text-align: center;
+    margin-bottom: 16px;
 }
 
-/* === CONTADORES === */
-.admin-panel__counters h3 {
-    margin-bottom: 12px;
-    color: #3b82f6;
+/* === TÍTULOS DE SECCIÓN === */
+.admin-panel__section-title {
+    font-size: 1.3rem;
     font-weight: 600;
-    font-size: 1.2rem;
+    color: #3b82f6;
+    margin-bottom: 12px;
+    border-left: 4px solid #3b82f6;
+    padding-left: 12px;
 }
 
-.admin-panel__counters .counters p {
-    margin: 6px 0;
+/* === LISTA DE CONTADORES === */
+.admin-panel__stats {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     font-size: 1rem;
     color: #334155;
 }
 
-/* === TABLA DE PARTICIPANTES === */
-.admin-panel__table h3 {
-    margin: 24px 0 12px;
-    color: #3b82f6;
+.admin-panel__stats li {
+    margin: 8px 0;
+    font-weight: 500;
+}
+
+/* === ACCIONES ADMINISTRATIVAS === */
+.admin-panel__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 24px;
+    background-color: #f9fafb;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.admin-panel__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.admin-panel__actions button {
+    padding: 12px 24px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: none;
     font-weight: 600;
-    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    letter-spacing: 0.4px;
+}
+
+.admin-panel__actions button.primary {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: #ffffff;
+}
+
+.admin-panel__actions button.primary:hover {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    transform: translateY(-2px) scale(1.03);
+}
+
+.admin-panel__actions button.danger {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    color: #ffffff;
+}
+
+.admin-panel__actions button.danger:hover {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    transform: translateY(-2px) scale(1.03);
+}
+
+.admin-panel__actions button.secondary {
+    background: #f3f4f6;
+    color: #1f2937;
+    border: 1px solid #d1d5db;
+}
+
+.admin-panel__actions button.secondary:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+/* === TABLA DE PARTICIPANTES === */
+.admin-panel__table {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 0;
+}
+
+.admin-panel__table-wrapper {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f1f5f9;
 }
 
 .admin-panel__table table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 16px;
     font-size: 0.95rem;
+    min-width: 480px;
 }
 
-.admin-panel__table th, .admin-panel__table td {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 10px;
+.admin-panel__table th,
+.admin-panel__table td {
+    padding: 12px 14px;
     text-align: left;
     color: #1e293b;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .admin-panel__table th {
-    background: #f1f5f9;
+    background-color: #f1f5f9;
     font-weight: 600;
     color: #475569;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
-/* === BOTONES === */
-    .admin-panel__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 16px;
+.admin-panel__table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
 }
 
-.admin-panel__actions button {
-    padding: 10px 20px;
-    font-size: 15px;
+.admin-panel__table td:last-child {
+    font-weight: 600;
+    color: #10b981;
+}
+
+/* === CAMPO DE TIEMPO DE JUEGO === */
+.admin-panel__game-time {
+    margin-top: 24px;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    border: none;
-    background: #3b82f6;
+    padding: 16px;
+    background-color: #f9fafb;
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.admin-panel__game-time legend {
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.admin-panel__game-time label {
+    margin-right: 8px;
+    color: #334155;
+}
+
+.admin-panel__game-time input[type="number"] {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    width: 80px;
+    font-size: 0.95rem;
+    margin-right: 8px;
+}
+
+.admin-panel__game-time button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    background-color: #10b981;
     color: #ffffff;
-    font-weight: 500;
+    border: none;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 2px 6px rgba(59,130,246,0.1);
+    transition: background-color 0.2s ease;
 }
 
-.admin-panel__actions button:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
+.admin-panel__game-time button:hover {
+    background-color: #059669;
 }
 
-/* === MENSAJE DE ESTADO === */
-.admin-panel__status {
-    margin-top: 20px;
-    font-size: 15px;
-    font-weight: 500;
-    min-height: 24px;
-    transition: color 0.2s ease;
-    text-align: center;
-}
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .admin-panel__layout {
+        grid-template-columns: 1fr;
+    }
 
-.status--success {
-    color: #16a34a;
-}
+    .admin-panel__actions,
+    .admin-panel__counters,
+    .admin-panel__table {
+        margin-top: 24px;
+    }
 
-.status--error {
-    color: #dc2626;
+    .admin-panel__buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .admin-panel__actions button {
+        width: 100%;
+    }
+
+    .admin-panel__game-time {
+        text-align: center;
+    }
+
+    .admin-panel__table-wrapper {
+        max-height: none;
+        overflow-x: auto;
+    }
 }

@@ -47,9 +47,13 @@ function updateVisitCount() {
 // === TIEMPOS DE GANADORES ===
 function guardarTiempoGanador(tiempo) {
     let tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
-    // Obtener nombre del usuario
+    // Obtener nombre y correo del usuario
     let user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
-    tiempos.push({ nombre: user.nombre || 'Desconocido', tiempo });
+    // Validar datos
+    let nombre = typeof user.nombre === 'string' && user.nombre.trim() ? user.nombre.trim() : 'Desconocido';
+    let correo = typeof user.correo === 'string' && user.correo.trim() ? user.correo.trim() : '-';
+    let tiempoValido = typeof tiempo === 'string' && tiempo.trim() ? tiempo.trim() : '00:00:00';
+    tiempos.push({ nombre, correo, tiempo: tiempoValido });
     localStorage.setItem('memoryGameTiempos', JSON.stringify(tiempos));
 }
 
@@ -89,7 +93,8 @@ function startTimer() {
         timeCounterEl.textContent = formatTime(millisecondsElapsed);
     }, 10);
 
-    // Si pasan 30 segundos, el jugador pierde
+    // Obtener tiempo de juego desde localStorage o usar 30s por defecto
+    let tiempoJuego = parseInt(localStorage.getItem('memoryGameTime')) || 30;
     loseTimeout = setTimeout(() => {
         stopTimer();
         gameStarted = false;
@@ -103,7 +108,7 @@ function startTimer() {
         loseSound.play();
         alert('¡Tiempo agotado! Has perdido el juego.');
         initGame();
-    }, 30000); // 60000 ms = 60 segundos
+    }, tiempoJuego * 1000);
 }
 
 function stopTimer() {
