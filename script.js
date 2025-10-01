@@ -21,6 +21,12 @@ let timerInterval;
 let millisecondsElapsed = 0;
 let loseTimeout = null;
 
+// Modal de usuario
+const userModal = document.getElementById('userModal');
+const userForm = document.getElementById('userForm');
+const userNameInput = document.getElementById('userName');
+const userEmailInput = document.getElementById('userEmail');
+
 const gameBoard = document.getElementById('gameBoard');
 const visitCountEl = document.getElementById('visitCount');
 const winCountEl = document.getElementById('winCount');
@@ -41,7 +47,9 @@ function updateVisitCount() {
 // === TIEMPOS DE GANADORES ===
 function guardarTiempoGanador(tiempo) {
     let tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
-    tiempos.push(tiempo);
+    // Obtener nombre del usuario
+    let user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
+    tiempos.push({ nombre: user.nombre || 'Desconocido', tiempo });
     localStorage.setItem('memoryGameTiempos', JSON.stringify(tiempos));
 }
 
@@ -123,7 +131,7 @@ function initGame() {
         card.classList.add('memory-card'); // sin 'memory-card--flipped'
         card.innerHTML = `
         <div class="memory-card__inner">
-            <div class="memory-card__front">?</div>
+            <div class="memory-card__front no-select">?</div>
             <div class="memory-card__back">
             <img src="logos/${logoFile}" alt="Logo" class="memory-card__image" />
             </div>
@@ -195,11 +203,11 @@ tablaButton.addEventListener('click', () => {
     const tiempos = obtenerTiemposGanadores();
     tablaTiempos.innerHTML = '';
     if (tiempos.length === 0) {
-        tablaTiempos.innerHTML = '<tr><td colspan="2">No hay tiempos registrados.</td></tr>';
+        tablaTiempos.innerHTML = '<tr><td colspan="3">No hay tiempos registrados.</td></tr>';
     } else {
         tiempos.forEach((t, i) => {
             const row = document.createElement('tr');
-            row.innerHTML = `<td>${i+1}</td><td>${t}</td>`;
+            row.innerHTML = `<td>${i+1}</td><td>${t.nombre || 'Desconocido'}</td><td>${t.tiempo}</td>`;
             tablaTiempos.appendChild(row);
         });
     }
@@ -209,20 +217,12 @@ tablaButton.addEventListener('click', () => {
 cerrarTablaTiempos.addEventListener('click', () => {
     tablaTiemposModal.style.display = 'none';
 });
+// Mostrar modal al hacer click en "Nuevo Juego"
 startButton.addEventListener('click', () => {
-    resetTimer();
-    startTimer();
-    gameStarted = true;
-    initGame();
-
-    // Reproducir audio al iniciar el juego
-    if (gameAudio) {
-        gameAudio.pause();
-        gameAudio.currentTime = 0;
-    }
-    gameAudio = new Audio('sound/cort_infantilanimada_dm-248977.mp3');
-    gameAudio.loop = true;
-    gameAudio.play();
+    userModal.style.display = 'flex';
+    userNameInput.value = '';
+    userEmailInput.value = '';
+    userNameInput.focus();
 });
 
 resetButton.addEventListener('click', () => {
@@ -236,62 +236,33 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-// === INICIO ===
-
-// === LOGIN CON QR ===
-const loginModal = document.getElementById('loginModal');
-const qrCanvas = document.getElementById('qrCanvas');
-const codigoForm = document.getElementById('codigoForm');
-const codigoInput = document.getElementById('codigoInput');
-const loginMsg = document.getElementById('loginMsg');
-
-function mostrarQR() {
-    // Generar QR con la URL del formulario
-    const url = window.location.origin + window.location.pathname.replace('index.html','login.html');
-    const qr = new QRious({
-        element: qrCanvas,
-        value: url,
-        size: 180
-    });
-}
-
-function loginHabilitado() {
-    return localStorage.getItem('memoryGameLoginToken') && localStorage.getItem('memoryGameUser');
-}
-
-function habilitarJuego() {
-    loginModal.style.display = 'none';
-    updateVisitCount();
-    loadCounters();
-    initGame();
-    // Habilitar botones
-    startButton.disabled = false;
-    resetButton.disabled = false;
-    tablaButton.disabled = false;
-}
-
-function deshabilitarJuego() {
-    loginModal.style.display = 'flex';
-    startButton.disabled = true;
-    resetButton.disabled = true;
-    tablaButton.disabled = true;
-}
-
-if(loginHabilitado()) {
-    habilitarJuego();
-} else {
-    deshabilitarJuego();
-    mostrarQR();
-}
-
-codigoForm.onsubmit = function(e) {
+// Validar y aceptar datos del usuario
+userForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const tokenIngresado = codigoInput.value.trim();
-    const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
-    if(tokenIngresado && user.token === tokenIngresado) {
-        habilitarJuego();
-        loginMsg.textContent = '¡Acceso concedido!';
-    } else {
-        loginMsg.textContent = 'Código incorrecto.';
+    const nombre = userNameInput.value.trim();
+    const correo = userEmailInput.value.trim();
+    if (!nombre || !correo || !correo.match(/^\S+@\S+\.\S+$/)) {
+        alert('Por favor ingresa un nombre y un correo electrónico válido.');
+        return;
     }
-};
+    localStorage.setItem('memoryGameUser', JSON.stringify({ nombre, correo }));
+    userModal.style.display = 'none';
+    // Iniciar el juego
+    resetTimer();
+    startTimer();
+    gameStarted = true;
+    initGame();
+    // Reproducir audio al iniciar el juego
+    if (gameAudio) {
+        gameAudio.pause();
+        gameAudio.currentTime = 0;
+    }
+    gameAudio = new Audio('sound/cort_infantilanimada_dm-248977.mp3');
+    gameAudio.loop = true;
+    gameAudio.play();
+});
+// === INICIO ===
+updateVisitCount();
+loadCounters();
+initGame();
+

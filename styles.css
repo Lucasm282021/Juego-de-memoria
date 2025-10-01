@@ -1,3 +1,30 @@
+/* === VARIABLES DE COLOR === */
+:root {
+    --color-bg-primary: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-bg-light: #f9f9f9;
+
+    --color-text-primary: #e2e8f0;
+    --color-text-secondary: #94a3b8;
+    --color-text-muted: #555;
+
+    --color-accent: #38bdf8;
+    --color-accent-hover: #f87171;
+    --color-success: #22c55e;
+    --color-success-hover: #16a34a;
+
+    --color-border: #000000;
+    --color-border-light: #ddd;
+}
+
+/* === CLASE GLOBAL NO-SELECT === */
+.no-select {
+  user-select: none;        /* Estándar moderno */
+  -webkit-user-select: none; /* Safari y Chrome */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+}
+
 /* === MODAL TIEMPOS === */
 #tablaTiemposModal {
     display: none;
@@ -58,23 +85,6 @@
 .modal-tiempos-cerrar:hover {
     background: #3466c2;
     transform: translateY(-2px) scale(1.04);
-}
-:root {
-    --color-bg-primary: #0f172a;
-    --color-bg-secondary: #1e293b;
-    --color-bg-light: #f9f9f9;
-
-    --color-text-primary: #e2e8f0;
-    --color-text-secondary: #94a3b8;
-    --color-text-muted: #555;
-
-    --color-accent: #38bdf8;
-    --color-accent-hover: #f87171;
-    --color-success: #22c55e;
-    --color-success-hover: #16a34a;
-
-    --color-border: #000000;
-    --color-border-light: #ddd;
 }
 
 /* === BLOQUE PRINCIPAL: memory-game === */
@@ -299,50 +309,13 @@
 
 /* === RESPONSIVIDAD === */
 @media (max-width: 768px) {
-    .memory-game__main {
-        flex-direction: column;
-        align-items: center;
-    }
+  .memory-board {
+    grid-template-columns: repeat(2, 140px);
+    gap: 16px;
+  }
 
-    .memory-game__sidebar {
-        max-width: none;
-        width: 100%;
-        text-align: center;
-    }
-
-    .memory-game__controls {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .memory-board {
-        grid-template-columns: repeat(3, 120px);
-        gap: 16px;
-    }
-
-    .memory-card {
-        width: 120px;
-        height: 120px;
-    }
-
-    .memory-card__image {
-        padding: 4px;
-    }
-}
-
-@media (max-width: 480px) {
-    .memory-board {
-        grid-template-columns: repeat(2, 100px);
-        gap: 12px;
-    }
-
-    .memory-card {
-        width: 100px;
-        height: 100px;
-    }
-
-    .memory-card__image {
-        padding: 2px;
-    }
+  .memory-card {
+    width: 140px;
+    height: 140px;
+  }
 }

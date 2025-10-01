@@ -35,7 +35,7 @@
       <!-- Botones a la derecha -->
       <aside class="memory-game__sidebar memory-game__sidebar--right">
         <div class="memory-game__controls">
-          <button class="memory-game__start-button" id="startButton">Iniciar</button>
+          <button class="memory-game__start-button" id="startButton">Nuevo Juego</button>
           <button class="memory-game__reset-button" id="resetButton">Reiniciar Juego</button>
           <button class="memory-game__tabla-button" id="tablaButton">Tabla de Tiempos</button>
         </div>
@@ -52,26 +52,26 @@
       <h3 class="modal-tiempos-titulo">Tabla de Tiempos</h3>
       <table id="tablaTiempos" class="modal-tiempos-tabla">
         <thead>
-          <tr><th>#</th><th>Tiempo</th></tr>
+          <tr><th>Posición</th><th>Nombre</th><th>Tiempo</th></tr>
         </thead>
         <tbody></tbody>
       </table>
       <button id="cerrarTablaTiempos" class="modal-tiempos-cerrar">Cerrar</button>
     </div>
   </div>
-  <!-- Modal de Login QR -->
-  <div id="loginModal" style="display:flex; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center;">
-    <div class="modal-tiempos-panel" style="max-width:350px;">
-      <h3 class="modal-tiempos-titulo">Acceso al Juego</h3>
-      <p>Escanea este QR con tu móvil para acceder:</p>
-      <canvas id="qrCanvas" style="margin:12px auto;"></canvas>
-      <form id="codigoForm">
-        <input type="text" id="codigoInput" placeholder="Código de acceso" required style="width:90%;margin:10px 0;">
-        <button type="submit" class="modal-tiempos-cerrar">Validar</button>
-      </form>
-      <div id="loginMsg" style="margin-top:10px;color:#2ecc40;"></div>
+    <!-- Modal para datos de usuario -->
+    <div id="userModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:10000; align-items:center; justify-content:center;">
+      <div class="modal-tiempos-panel">
+        <h3 class="modal-tiempos-titulo">Datos del Jugador</h3>
+        <form id="userForm">
+          <div style="margin-bottom:16px;">
+            <input type="text" id="userName" placeholder="Nombre" required style="width:90%;padding:8px;margin-bottom:10px;">
+            <input type="email" id="userEmail" placeholder="Correo electrónico" required style="width:90%;padding:8px;">
+          </div>
+          <button type="submit" class="modal-tiempos-cerrar">Aceptar</button>
+        </form>
+      </div>
     </div>
-  </div>
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
   <script src="script.js"></script>
 </body>

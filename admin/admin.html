@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Administrador - Reset Contadores</title>
-    <link rel="stylesheet" href="admin.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
-    <div class="admin-panel">
+    <main class="admin-panel">
+        <header class="admin-panel__header">
         <h2>Panel de Administrador</h2>
-        <div style="margin-bottom:18px;">
-            <span>Visitas: <span id="visitsCount">0</span></span><br>
-            <span>Victorias: <span id="winsCount">0</span></span>
+        </header>
+
+        <section class="admin-panel__counters">
+        <h3>Contadores</h3>
+        <div class="counters">
+            <p>Visitas: <span id="visitsCount">0</span></p>
+            <p>Victorias: <span id="winsCount">0</span></p>
         </div>
+        </section>
+
+        <section class="admin-panel__table">
+        <h3>Participantes y Tiempos</h3>
+        <table id="tablaParticipantes">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Tiempo</th>
+                <th>Ganador</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        </section>
+
+        <section class="admin-panel__actions">
         <button id="resetVisits">Resetear Visitas</button>
         <button id="resetWins">Resetear Victorias</button>
         <button id="resetAll">Resetear Todo</button>
-        <div class="status" id="statusMsg"></div>
-    </div>
+        </section>
+
+        <div class="status" id="statusMsg" aria-live="polite"></div>
+    </main>
+
     <script src="admin.js"></script>
 </body>
 </html>
