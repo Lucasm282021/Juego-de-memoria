@@ -4,8 +4,8 @@ const logos = [
     'ISFDyT26.png', 'ISFDyT26.png',
     'Phishing.png', 'Phishing.png',
     'LogoDS.png', 'LogoDS.png',
-    'LogoDS.png', 'LogoDS.png',
-    'LogoDS.png', 'LogoDS.png',
+    'Scareware.png', 'Scareware.png',
+    'Spyware.png', 'Spyware.png',
     'Spoofing.png', 'Spoofing.png'
 ];
 
