@@ -25,68 +25,6 @@
   -ms-user-select: none;     /* Internet Explorer/Edge */
 }
 
-/* === MODAL TIEMPOS === */
-#tablaTiemposModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.5);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-}
-.modal-tiempos-panel {
-    background: #fff;
-    max-width: 400px;
-    width: 90%;
-    margin: auto;
-    padding: 32px 24px 24px 24px;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-    border: none;
-    text-align: center;
-}
-.modal-tiempos-titulo {
-    margin-bottom: 24px;
-    color: #2d3a4a;
-    font-weight: 600;
-    font-size: 1.3em;
-}
-.modal-tiempos-tabla {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 16px;
-}
-.modal-tiempos-tabla th, .modal-tiempos-tabla td {
-    border-bottom: 1px solid #e0eafc;
-    padding: 8px 0;
-    color: #2d3a4a;
-}
-.modal-tiempos-tabla th {
-    background: #f5f8ff;
-    font-weight: 500;
-}
-.modal-tiempos-cerrar {
-    margin-top: 12px;
-    padding: 10px 28px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: none;
-    background: #4f8cff;
-    color: #fff;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-    box-shadow: 0 2px 8px rgba(79,140,255,0.08);
-}
-.modal-tiempos-cerrar:hover {
-    background: #3466c2;
-    transform: translateY(-2px) scale(1.04);
-}
-
 /* === BLOQUE PRINCIPAL: memory-game === */
 .memory-game {
     margin: 0;
@@ -101,7 +39,7 @@
     background: var(--color-bg-primary);
     color: var(--color-text-primary);
     margin: 0;
-    padding: 2rem;
+    padding: 1rem 0 2rem 0;
 }
 /* === HEADER === */
 .memory-game__header {
@@ -111,14 +49,6 @@
 .memory-game__title {
     color: var(--color-accent);
     margin-bottom: 1rem;
-    text-align: center;
-}
-
-.memory-game__subtitle {
-    font-size: 1.2rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-    font-weight: 500;
     text-align: center;
 }
 
@@ -135,6 +65,7 @@
 .memory-game__sidebar {
     flex: 1 1 200px;
     max-width: 220px;
+    margin: 1rem auto;
 }
 
 .memory-game__board-wrapper {
@@ -147,15 +78,17 @@
 /* === TABLERO === */
 .memory-board {
     display: grid;
-    grid-template-columns: repeat(4, 180px);
-    gap: 24px;
-    justify-content: center;
+    grid-template-columns: repeat(4, 1fr); /* columnas flexibles */
+    gap: 2vw; /* separación relativa al ancho de pantalla */
+    width: 100%;
+    max-width: 80vmin; /* tablero nunca más grande que el lado menor */
+    margin: auto;
 }
 
 /* === CARTAS === */
 .memory-card {
-    width: 180px;
-    height: 180px;
+    aspect-ratio: 1 / 1; /* mantiene proporción cuadrada */
+    width: 100%;         /* ocupa todo el espacio de la celda */
     background-color: transparent;
     border-radius: 14px;
     cursor: pointer;
@@ -253,7 +186,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 2rem;
 }
 
 .memory-game__start-button {
@@ -290,6 +222,75 @@
     color: #fff;
 }
 
+/* === MODAL TIEMPOS === */
+#tablaTiemposModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-tiempos-panel {
+    background: #fff;
+    max-width: 400px;
+    width: 90%;
+    margin: auto;
+    padding: 32px 24px 24px 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    border: none;
+    text-align: center;
+}
+
+.modal-tiempos-titulo {
+    margin-bottom: 24px;
+    color: #2d3a4a;
+    font-weight: 600;
+    font-size: 1.3em;
+}
+
+.modal-tiempos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+.modal-tiempos-tabla th, .modal-tiempos-tabla td {
+    border-bottom: 1px solid #e0eafc;
+    padding: 8px 0;
+    color: #2d3a4a;
+}
+
+.modal-tiempos-tabla th {
+    background: #f5f8ff;
+    font-weight: 500;
+}
+
+.modal-tiempos-cerrar {
+    margin-top: 12px;
+    padding: 10px 28px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #4f8cff;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+}
+
+.modal-tiempos-cerrar:hover {
+    background: #3466c2;
+    transform: translateY(-2px) scale(1.04);
+}
+
 /* === FOOTER === */
 .memory-game__footer {
     background-color: var(--color-bg-secondary);
@@ -308,14 +309,3 @@
 }
 
 /* === RESPONSIVIDAD === */
-@media (max-width: 768px) {
-  .memory-board {
-    grid-template-columns: repeat(2, 140px);
-    gap: 16px;
-  }
-
-  .memory-card {
-    width: 140px;
-    height: 140px;
-  }
-}

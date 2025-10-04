@@ -224,6 +224,14 @@ cerrarTablaTiempos.addEventListener('click', () => {
 });
 // Mostrar modal al hacer click en "Nuevo Juego"
 startButton.addEventListener('click', () => {
+    resetTimer();
+    gameStarted = false;
+    initGame();
+    // Detener audio al reiniciar
+    if (gameAudio) {
+        gameAudio.pause();
+        gameAudio.currentTime = 0;
+    }
     userModal.style.display = 'flex';
     userNameInput.value = '';
     userEmailInput.value = '';
