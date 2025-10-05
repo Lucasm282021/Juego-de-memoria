@@ -9,7 +9,7 @@
 <body class="memory-game">
   <div class="memory-game__container">
     <header class="memory-game__header">
-      <h1 class="memory-game__title">Del Click a la Consciencia</h1>
+      <h1 class="memory-game__title">Juego de Memoria</h1>
     </header>
     <main class="memory-game__main">
       <!-- Contadores a la izquierda -->
@@ -45,6 +45,7 @@
       © 2025 Montero Lucas Damián. Todos los derechos reservados.
     </p>
   </footer>
+  <!-- Modal para tabla de tiempos -->
   <div id="tablaTiemposModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
     <div class="modal-tiempos-panel">
       <h3 class="modal-tiempos-titulo">Tabla de Tiempos</h3>
@@ -57,12 +58,28 @@
       <button id="cerrarTablaTiempos" class="modal-tiempos-cerrar">Cerrar</button>
     </div>
   </div>
+    <!-- Modal para perder el juego -->
+    <div id="loseModal" class="modal" role="dialog" aria-labelledby="loseTitle" aria-hidden="true">
+      <div class="modal__content">
+        <h2 id="loseTitle">⏱️ Tiempo agotado</h2>
+        <p>Has perdido el juego.</p>
+        <button id="AceptarButton">Aceptar</button>
+      </div>
+    </div>
+    <!-- Modal para ganar el juego -->
+    <div id="winModal" class="modal" role="dialog" aria-labelledby="winTitle" aria-hidden="true">
+      <div class="modal__content">
+        <h2 id="winTitle">🎉 ¡Victoria!</h2>
+        <p id="winMessage"></p>
+        <button id="winAcceptButton">Aceptar</button> 
+      </div> 
+    </div>
     <!-- Modal para datos de usuario -->
     <div id="userModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:10000; align-items:center; justify-content:center;">
       <div class="modal-tiempos-panel" style="position:relative; background:white; padding:24px; border-radius:8px;">
       <!-- Botón de cierre -->
       <button onclick="document.getElementById('userModal').style.display='none'" 
-      style="position:absolute; top:8px; right:8px; background:none; border:none; font-size:20px; cursor:pointer;">×</button>
+      style="position:absolute; top:8px; right:8px; background:none; border:none; color: red; font-size:2rem; cursor:pointer;">×</button>
       <h3 class="modal-tiempos-titulo">Datos del Jugador</h3>
       <form id="userForm">
         <div style="margin-bottom:16px;">

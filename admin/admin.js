@@ -103,25 +103,50 @@ function mostrarTablaParticipantes() {
   const tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
   const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
 
-  const crearFila = ({ nombre = 'Desconocido', correo = '-', tiempo = '-', estado = 'Ganador' }) => `
-    <tr>
+  // Convertir tiempo a milisegundos
+  const parseTime = (str) => {
+    const [min, sec, ms] = str.split(':').map(Number);
+    return (min * 60 * 1000) + (sec * 1000) + ms;
+  };
+
+  // Ordenar por tiempo ascendente
+  const tiemposOrdenados = tiempos
+    .filter(t => t.tiempo && t.tiempo.includes(':'))
+    .sort((a, b) => parseTime(a.tiempo) - parseTime(b.tiempo));
+
+  const crearFila = ({ posicion, nombre = 'Desconocido', correo = '-', tiempo = '-', estado = 'Ganador' }) => `
+    <tr class="fila--${estado === 'Ganador' ? 'ganador' : 'no-ganador'}">
+      <td>${posicion}</td>
       <td>${nombre}</td>
       <td>${correo}</td>
       <td>${tiempo}</td>
       <td>${estado}</td>
     </tr>`;
 
-  // Participantes ganadores
-  tiempos.forEach(({ nombre, correo, tiempo }) => {
-    tablaBody.innerHTML += crearFila({ nombre, correo, tiempo });
+  // Renderizar ganadores ordenados
+  tiemposOrdenados.forEach(({ nombre, correo, tiempo }, index) => {
+    tablaBody.innerHTML += crearFila({
+      posicion: index + 1,
+      nombre,
+      correo,
+      tiempo,
+      estado: 'Ganador'
+    });
   });
 
   // Usuario actual no ganador
   const esNoGanador = user.nombre && user.correo && !tiempos.some(t => t.nombre === user.nombre);
   if (esNoGanador) {
-    tablaBody.innerHTML += crearFila({ nombre: user.nombre, correo: user.correo, estado: 'No Ganador' });
+    tablaBody.innerHTML += crearFila({
+      posicion: tiemposOrdenados.length + 1,
+      nombre: user.nombre,
+      correo: user.correo,
+      tiempo: '-',
+      estado: 'No Ganador'
+    });
   }
 }
+
 
 // === INICIALIZACIÓN ===
 updateCounters();

@@ -106,7 +106,7 @@ function startTimer() {
         // Reproducir sonido de derrota
         loseSound.currentTime = 0;
         loseSound.play();
-        alert('¡Tiempo agotado! Has perdido el juego.');
+        document.getElementById('loseModal').style.display = 'flex';
         initGame();
     }, tiempoJuego * 1000);
 }
@@ -182,8 +182,31 @@ function flipCard(card) {
         setTimeout(() => {
             const tiempoFinal = formatTime(millisecondsElapsed);
             guardarTiempoGanador(tiempoFinal);
-            alert(`¡Victoria! Has emparejado todos los logos.\nTiempo logrado: ${tiempoFinal}`);
-        }, 300);
+
+            // Obtener ranking actualizado
+            const tiempos = obtenerTiemposGanadores();
+            const parseTime = (str) => {
+                const [min, sec, ms] = str.split(':').map(Number);
+                return (min * 60 * 1000) + (sec * 1000) + ms;
+            };
+
+            const tiemposOrdenados = tiempos
+                .filter(t => t.tiempo && t.tiempo.includes(':'))
+                .sort((a, b) => parseTime(a.tiempo) - parseTime(b.tiempo));
+
+            const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
+            const posicion = tiemposOrdenados.findIndex(t => t.nombre === user.nombre) + 1;
+
+            // Mostrar modal con datos
+            const winModal = document.getElementById('winModal');
+            const winMessage = document.getElementById('winMessage');
+            winMessage.innerHTML = `
+                Has emparejado todos los logos.<br>
+                <span class="win-highlight win-highlight--tiempo">⏱️ Tiempo logrado: ${tiempoFinal}</span>
+                <span class="win-highlight win-highlight--posicion">🏅 Posición en el ranking: ${posicion}</span>
+                `;
+                winModal.style.display = 'flex';
+            }, 300);
         }
     } else {
         lockBoard = true;
@@ -202,22 +225,60 @@ const tablaButton = document.getElementById('tablaButton');
 const tablaTiemposModal = document.getElementById('tablaTiemposModal');
 const cerrarTablaTiempos = document.getElementById('cerrarTablaTiempos');
 const tablaTiempos = document.getElementById('tablaTiempos').getElementsByTagName('tbody')[0];
+const aceptarButton = document.getElementById('AceptarButton');
+const aceptarWinButton = document.getElementById('winAcceptButton');
+
+aceptarButton.addEventListener('click', () => {
+    document.getElementById('loseModal').style.display = 'none';
+    initGame();
+});
+
+aceptarWinButton.addEventListener('click', () => {
+    document.getElementById('winModal').style.display = 'none';
+    initGame();
+});
 
 tablaButton.addEventListener('click', () => {
-    // Mostrar la tabla modal
     const tiempos = obtenerTiemposGanadores();
+
+    // Convertir tiempo a milisegundos
+    const parseTime = (str) => {
+        const [min, sec, ms] = str.split(':').map(Number);
+        return (min * 60 * 1000) + (sec * 1000) + ms;
+    };
+
+    // Ordenar por tiempo ascendente y limitar a los 10 primeros
+    const tiemposOrdenados = tiempos
+        .filter(t => t.tiempo && t.tiempo.includes(':'))
+        .sort((a, b) => parseTime(a.tiempo) - parseTime(b.tiempo))
+        .slice(0, 10); // ✅ Limitar a top 10
+
     tablaTiempos.innerHTML = '';
-    if (tiempos.length === 0) {
+
+    if (tiemposOrdenados.length === 0) {
         tablaTiempos.innerHTML = '<tr><td colspan="3">No hay tiempos registrados.</td></tr>';
     } else {
-        tiempos.forEach((t, i) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${i+1}</td><td>${t.nombre || 'Desconocido'}</td><td>${t.tiempo}</td>`;
-            tablaTiempos.appendChild(row);
+    tiemposOrdenados.forEach((t, i) => {
+        const row = document.createElement('tr');
+
+        // Medalla según posición
+        let medalla = '';
+        if (i === 0) medalla = '🥇';
+        else if (i === 1) medalla = '🥈';
+        else if (i === 2) medalla = '🥉';
+
+        row.innerHTML = `
+            <td>${medalla || i + 1}</td>
+            <td>${t.nombre || 'Desconocido'}</td>
+            <td>${t.tiempo}</td>
+        `;
+        tablaTiempos.appendChild(row);
         });
     }
+
     tablaTiemposModal.style.display = 'flex';
 });
+
 
 cerrarTablaTiempos.addEventListener('click', () => {
     tablaTiemposModal.style.display = 'none';
@@ -260,6 +321,8 @@ userForm.addEventListener('submit', function(e) {
     }
     localStorage.setItem('memoryGameUser', JSON.stringify({ nombre, correo }));
     userModal.style.display = 'none';
+    // ✅ Aumentar contador de visitas al iniciar juego
+    updateVisitCount();
     // Iniciar el juego
     resetTimer();
     startTimer();
@@ -275,7 +338,7 @@ userForm.addEventListener('submit', function(e) {
     gameAudio.play();
 });
 // === INICIO ===
-updateVisitCount();
+//updateVisitCount();
 loadCounters();
 initGame();
 
