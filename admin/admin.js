@@ -3,6 +3,12 @@ const statusMsg = document.getElementById('statusMsg');
 const visitsCount = document.getElementById('visitsCount');
 const winsCount = document.getElementById('winsCount');
 const tablaBody = document.querySelector('#tablaParticipantes tbody');
+const botonVolver = document.getElementById('returnGame');
+
+// === BOTÓN VOLVER AL JUEGO ===
+botonVolver.onclick = function() {
+  window.location.href = '../index.html'; // Ajusta la ruta según la ubicación real del archivo index.html
+}
 
 // === ACTUALIZAR CONTADORES ===
 function updateCounters() {
@@ -91,31 +97,29 @@ window.addEventListener('storage', function(e) {
   }
 });
 
-// === MOSTRAR TABLA DE PARTICIPANTES ===
 function mostrarTablaParticipantes() {
   tablaBody.innerHTML = '';
+
   const tiempos = JSON.parse(localStorage.getItem('memoryGameTiempos')) || [];
   const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
 
+  const crearFila = ({ nombre = 'Desconocido', correo = '-', tiempo = '-', estado = 'Ganador' }) => `
+    <tr>
+      <td>${nombre}</td>
+      <td>${correo}</td>
+      <td>${tiempo}</td>
+      <td>${estado}</td>
+    </tr>`;
+
+  // Participantes ganadores
   tiempos.forEach(({ nombre, correo, tiempo }) => {
-    tablaBody.innerHTML += `
-      <tr>
-        <td>${nombre || 'Desconocido'}</td>
-        <td>${correo || '-'}</td>
-        <td>${tiempo}</td>
-        <td>Ganador</td>
-      </tr>`;
+    tablaBody.innerHTML += crearFila({ nombre, correo, tiempo });
   });
 
-  const noGanador = user.nombre && user.correo && !tiempos.some(t => t.nombre === user.nombre);
-  if (noGanador) {
-    tablaBody.innerHTML += `
-      <tr>
-        <td>${user.nombre}</td>
-        <td>${user.correo}</td>
-        <td>-</td>
-        <td>No Ganador</td>
-      </tr>`;
+  // Usuario actual no ganador
+  const esNoGanador = user.nombre && user.correo && !tiempos.some(t => t.nombre === user.nombre);
+  if (esNoGanador) {
+    tablaBody.innerHTML += crearFila({ nombre: user.nombre, correo: user.correo, estado: 'No Ganador' });
   }
 }
 

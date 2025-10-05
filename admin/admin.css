@@ -31,25 +31,72 @@
     font-weight: 500;
 }
 
-/* === ACCIONES ADMINISTRATIVAS === */
-.admin-panel__actions {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 24px;
-    background-color: #f9fafb;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
+/* === CONTENEDOR DE BOTONES === */
 .admin-panel__buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 16px 0;
 }
+
+/* === BOTONES LLAMATIVOS === */
+.admin-panel__buttons button {
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    background: #3b82f6; /* Azul vibrante */
+}
+
+/* === EFECTO DE ONDA AL HACER CLICK === */
+.admin-panel__buttons button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.admin-panel__buttons button:active::after {
+    width: 200%;
+    height: 200%;
+}
+
+/* === HOVER INTENSO === */
+.admin-panel__buttons button:hover {
+    background: linear-gradient(135deg, #0284c7, #2563eb);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* === FOCUS ACCESIBLE === */
+.admin-panel__buttons button:focus-visible {
+    outline: 3px solid #3b82f6;
+    outline-offset: 3px;
+}
+
+/* === ACTIVE FEEDBACK === */
+.admin-panel__buttons button:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
 
 .admin-panel__actions button {
     padding: 12px 24px;
