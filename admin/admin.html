@@ -28,32 +28,30 @@
         </section>
         <section class="admin-panel__config" aria-labelledby="configTitulo">
             <h2 id="configTitulo" class="admin-panel__section-title">Configuración</h2>
-            <fieldset class="admin-panel__game-time">
-                <legend>Configuración del Juego</legend>
-                <div>
-                    <label for="gameTime">Duración (seg):</label>
-                    <input type="number" id="gameTime" name="gameTime" min="10" max="300" value="30" />
+            <div class="config-layout">
+                <fieldset class="admin-panel__game-time">
+                    <legend>Tiempos del Juego</legend>
+                    <div>
+                        <label for="gameTime">Duración (seg):</label>
+                        <input type="number" id="gameTime" name="gameTime" min="10" max="300" value="30" />
+                    </div>
+                    <div>
+                        <label for="alertTime">Alerta (seg):</label>
+                        <input type="number" id="alertTime" name="alertTime" min="1" max="60" value="5" />
+                    </div>
+                </fieldset>
+                <div class="admin-panel__counters" aria-labelledby="contadoresTitulo">
+                    <h3 id="contadoresTitulo" class="config-subtitle">Contadores</h3>
+                    <ul class="admin-panel__stats">
+                        <li>Visitas: <span id="visitsCount">0</span></li>
+                        <li>Victorias: <span id="winsCount">0</span></li>
+                    </ul>
                 </div>
-                <div>
-                    <label for="alertTime">Alerta (seg):</label>
-                    <input type="number" id="alertTime" name="alertTime" min="1" max="60" value="5" />
+                <div class="admin-panel__images" aria-labelledby="imagenesTitulo">
+                    <h3 id="imagenesTitulo" class="config-subtitle">Imágenes del Juego</h3>
+                    <div id="imageManagementGrid" class="image-management-grid"></div>
                 </div>
-            </fieldset>
-        </section>
-
-        <!-- Contadores -->
-        <section class="admin-panel__counters" aria-labelledby="contadoresTitulo">
-            <h2 id="contadoresTitulo" class="admin-panel__section-title">Contadores</h2>
-            <ul class="admin-panel__stats">
-            <li>Visitas: <span id="visitsCount">0</span></li>
-            <li>Victorias: <span id="winsCount">0</span></li>
-            </ul>
-        </section>
-
-        <!-- Gestión de Imágenes -->
-        <section class="admin-panel__images" aria-labelledby="imagenesTitulo">
-            <h2 id="imagenesTitulo" class="admin-panel__section-title">Imágenes del Juego</h2>
-            <div id="imageManagementGrid" class="image-management-grid"></div>
+            </div>
         </section>
 
         <!-- Tabla de participantes -->

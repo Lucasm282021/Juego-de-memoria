@@ -28,7 +28,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.5rem; /* Padding consistente */
+    padding: clamp(1rem, 4vw, 2rem); /* Padding fluido */
 }
 
 /* === LAYOUT PRINCIPAL === */
@@ -38,7 +38,7 @@ body {
 }
 
 .admin-panel__header {
-    margin-bottom: 2rem;
+    margin-bottom: clamp(1.5rem, 5vw, 2.5rem); /* Margen fluido */
     text-align: center;
 }
 
@@ -51,7 +51,7 @@ body {
 .admin-panel__layout {
     display: grid;
     grid-template-columns: 1fr; /* Cambiado para tener una sola columna */
-    gap: 1.5rem;
+    gap: clamp(1rem, 4vw, 1.5rem); /* Gap fluido */
 }
 
 .admin-panel__section-title {
@@ -59,7 +59,7 @@ body {
     font-weight: 600;
     color: var(--admin-text-primary);
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: clamp(1rem, 4vw, 1.5rem); /* Margen fluido */
     border-bottom: 1px solid var(--admin-border-color);
     padding-bottom: 0.75rem;
 }
@@ -72,68 +72,92 @@ body {
 .admin-panel__config {
     background-color: var(--admin-card-bg);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: clamp(1rem, 4vw, 1.5rem); /* Padding fluido */
     border: 1px solid var(--admin-border-color);
 }
 
 /* === SECCIÓN DE ACCIONES Y BOTONES === */
 .admin-panel__buttons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(0.75rem, 2vw, 1rem); /* Gap fluido */
 }
 
-.admin-panel__buttons button {
-    padding: 10px 15px;
-    font-size: 0.85rem;
+.admin-panel__buttons-grid button {
+    padding: 12px 15px;
+    flex: 1 1 140px; /* Permite que los botones crezcan y se encojan, con una base de 140px */
+    font-size: clamp(0.85rem, 2vw, 0.95rem); /* Fuente fluida */
     font-weight: 600;
     border-radius: 8px;
-    border: none;
+    border: 2px solid transparent; /* Borde transparente por defecto */
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
+    background-color: transparent; /* Fondo transparente */
+}
+.admin-panel__buttons-grid button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #fff; /* Texto blanco al pasar el cursor */
 }
 
-.admin-panel__buttons button:active {
+
+.admin-panel__buttons-grid button:active {
     transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilos específicos de botones */
 #resetVisits, #resetWins, #resetAll, #returnGame {
-    background-color: var(--admin-primary-color);
-    color: #fff;
+    border-color: var(--admin-primary-color);
+    color: var(--admin-primary-color);
+}
+#resetVisits:hover, #resetWins:hover, #resetAll:hover, #returnGame:hover {
+    background-color: var(--admin-primary-hover);
+    border-color: var(--admin-primary-hover);
 }
 
 #deleteTable {
-    background-color: var(--admin-danger-color);
-    color: #fff;
+    border-color: var(--admin-danger-color);
+    color: var(--admin-danger-color);
 }
 #deleteTable:hover {
     background-color: var(--admin-danger-hover);
+    border-color: var(--admin-danger-hover);
 }
 
-#saveChangesBtn {
-    background-color: var(--admin-success-color);
-    color: #fff;
+#saveChangesBtn, #exportExcel {
+    border-color: var(--admin-success-color);
+    color: var(--admin-success-color);
 }
-#saveChangesBtn:hover {
+#saveChangesBtn:hover, #exportExcel:hover {
     background-color: var(--admin-success-hover);
+    border-color: var(--admin-success-hover);
 }
 
-#exportExcel {
-    background-color: var(--admin-success-color);
-    color: #fff;
-}
-#exportExcel:hover {
-    background-color: var(--admin-success-hover);
+/* === NUEVO LAYOUT PARA LA SECCIÓN DE CONFIGURACIÓN === */
+.config-layout {
+    display: grid;
+    gap: clamp(1rem, 4vw, 1.5rem);
 }
 
-#resetVisits:hover, #resetWins:hover, #resetAll:hover, #returnGame:hover {
-    background-color: var(--admin-primary-hover);
+.config-subtitle {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--admin-border-color);
 }
 
-/* === SECCIÓN DE CONTADORES === */
+/* Quitar estilos de tarjeta a los elementos anidados */
+.admin-panel__counters,
+.admin-panel__images {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
 .admin-panel__stats {
     list-style: none;
     padding: 0;
@@ -144,7 +168,7 @@ body {
     font-size: clamp(0.9rem, 2.5vw, 1.1rem); /* Escala con el viewport */
     font-weight: 500;
     color: var(--admin-text-secondary);
-    margin-bottom: 1rem;
+    margin-bottom: clamp(0.75rem, 2vw, 1rem); /* Margen fluido */
     display: flex;
     justify-content: space-between;
 }
@@ -350,8 +374,8 @@ body {
 
 /* === SECCIÓN DE GESTIÓN DE IMÁGENES === */
 .image-management-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Aumentamos el mínimo para mejor visualización */
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem; /* Reducir el espacio entre imágenes */
 }
 
@@ -360,6 +384,7 @@ body {
     border: 1px solid var(--admin-border-color);
     border-radius: 8px;
     padding: 0.5rem;
+    flex: 1 1 110px; /* Permite que las tarjetas crezcan y se encojan */
     padding-bottom: 1rem;
     text-align: center;
 }
@@ -404,12 +429,6 @@ body {
 .image-card__change-btn:hover {
     background-color: var(--admin-primary-hover);
 }
-/* === RESPONSIVE PARA MÓVILES PEQUEÑOS === */
-@media (max-width: 480px) {
-    .admin-panel__buttons-grid {
-        grid-template-columns: 1fr; /* Fuerza una sola columna para los botones */
-    }
-}
 
 /* === RESPONSIVE PARA ESCRITORIO (Layout de 2 columnas) === */
 @media (min-width: 992px) {
@@ -419,5 +438,11 @@ body {
     }
     .admin-panel__table {
         grid-column: 1 / -1; /* La tabla ocupa todo el ancho */
+    }
+    .config-layout {
+        grid-template-columns: 1fr 1fr; /* Dos columnas para tiempos y contadores */
+    }
+    .admin-panel__images {
+        grid-column: 1 / -1; /* Las imágenes ocupan todo el ancho dentro de su sección */
     }
 }
