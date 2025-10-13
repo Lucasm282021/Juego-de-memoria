@@ -377,7 +377,7 @@ body {
 /* === SECCIÓN DE GESTIÓN DE IMÁGENES === */
 .image-management-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Evita que las imágenes se envuelvan */
     gap: 0.5rem; /* Reducir el espacio entre imágenes */
 }
 
