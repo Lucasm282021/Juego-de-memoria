@@ -29,8 +29,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: clamp(1rem, 4vw, 2rem); /* Padding fluido */
+
 }
 
 /* === LAYOUT PRINCIPAL === */
@@ -52,7 +51,7 @@ body {
 
 .admin-panel__layout {
     display: grid;
-    grid-template-columns: 1fr; /* Cambiado para tener una sola columna */
+    grid-template-columns: 1fr; /* Una columna por defecto (móviles) */
     gap: clamp(1rem, 4vw, 1.5rem); /* Gap fluido */
 }
 
@@ -80,14 +79,13 @@ body {
 
 /* === SECCIÓN DE ACCIONES Y BOTONES === */
 .admin-panel__buttons-grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr)); /* 150px */
     gap: clamp(0.75rem, 2vw, 1rem); /* Gap fluido */
 }
 
 .admin-panel__buttons-grid button {
     padding: 0.75rem 1rem; /* 12px 15px -> 0.75rem 1rem */
-    flex: 1 1 8.75rem; /* 140px -> 8.75rem */
     font-size: clamp(0.85rem, 2vw, 0.95rem); /* Fuente fluida */
     font-weight: 600;
     border-radius: 0.5rem; /* 8px -> 0.5rem */
@@ -136,30 +134,6 @@ body {
     border-color: var(--admin-success-hover);
 }
 
-/* === NUEVO LAYOUT PARA LA SECCIÓN DE CONFIGURACIÓN === */
-.config-layout {
-    display: grid;
-    gap: clamp(1rem, 4vw, 1.5rem);
-}
-
-.config-subtitle {
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    font-weight: 600;
-    color: var(--admin-text-secondary);
-    margin-top: 0;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 0.0625rem solid var(--admin-border-color); /* 1px -> 0.0625rem */
-}
-
-/* Quitar estilos de tarjeta a los elementos anidados */
-.admin-panel__counters,
-.admin-panel__images {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-}
-
 .admin-panel__stats {
     list-style: none;
     padding: 0;
@@ -185,7 +159,6 @@ body {
 
 /* === CAMPO DE TIEMPO DE JUEGO === */
 .admin-panel__game-time {
-    margin-top: 1.5rem;
     border: none;
     padding: 0;
 }
@@ -427,4 +400,17 @@ body {
 }
 .image-card__change-btn:hover {
     background-color: var(--admin-primary-hover);
+}
+
+/* === DISEÑO ADAPTABLE PARA TABLETS Y ESCRITORIO === */
+@media (min-width: 768px) {
+    .admin-panel__layout {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas más grandes */
+    }
+
+    /* Hacer que las secciones de acciones y tabla ocupen todo el ancho */
+    .admin-panel__actions,
+    .admin-panel__table {
+        grid-column: 1 / -1; /* Ocupa desde la primera hasta la última columna */
+    }
 }
