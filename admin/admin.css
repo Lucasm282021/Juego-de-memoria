@@ -73,8 +73,8 @@ body {
 
 /* === SECCIÓN DE ACCIONES Y BOTONES === */
 .admin-panel__buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 
@@ -188,6 +188,10 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+.admin-panel__game-time div:not(:last-child) {
+    margin-bottom: 0.5rem; /* Añade un pequeño espacio cuando se apilan */
 }
 
 .admin-panel__game-time label {
@@ -207,7 +211,7 @@ body {
 
 /* === TABLA DE PARTICIPANTES === */
 .admin-panel__table-wrapper {
-    max-height: 400px;
+    max-height: 500px;
     overflow-y: auto;
     border: 1px solid var(--admin-border-color);
     border-radius: 8px;
@@ -279,12 +283,29 @@ body {
     body {
         padding: 1rem;
     }
+    .admin-panel__title {
+        font-size: 2rem;
+    }
     .admin-panel__layout {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .admin-panel__actions, .admin-panel__counters, .admin-panel__images, .admin-panel__table {
+        padding: 1rem;
     }
     .admin-panel__buttons {
-        grid-template-columns: 1fr 1fr;
+        flex-direction: column; /* Apila todos los botones verticalmente */
     }
+    .admin-panel__game-time div {
+        flex-direction: column; /* Apila label e input verticalmente */
+        align-items: flex-start;
+    }
+    .admin-panel__game-time input[type="number"] {
+        width: 100%; /* El input ocupa todo el ancho disponible */
+        max-width: none; /* Se anula el max-width de escritorio */
+        box-sizing: border-box;
+    }
+    .admin-panel__table-wrapper { overflow-x: auto; } /* Permite scroll horizontal en la tabla */
 }
 
 /* === ESTILOS PARA MODALES (reutilizados de menu.css y adaptados) === */
@@ -369,7 +390,7 @@ body {
 /* === SECCIÓN DE GESTIÓN DE IMÁGENES === */
 .image-management-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr); /* 8 columnas para que entren en una fila */
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Responsive por defecto */
     gap: 0.5rem; /* Reducir el espacio entre imágenes */
 }
 

@@ -407,3 +407,31 @@ body.light-mode {
 }
 
 /* === RESPONSIVIDAD === */
+@media (max-width: 600px) {
+    .memory-game__container {
+        padding-top: 2rem;
+    }
+
+    /* Apilar cabecera verticalmente */
+    .game-header {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Reducir tamaño del cronómetro */
+    .game-header__item--timer {
+        font-size: 2rem;
+        padding: 8px 20px;
+        min-width: 180px;
+    }
+
+    /* Reducir tamaño del botón */
+    .game-header__menu-button {
+        font-size: 1rem;
+        padding: 0.7rem 1.4rem;
+    }
+
+    /* Ajustar tablero para que no se pegue a los bordes */
+    .memory-board { max-width: 95vw; gap: 2.5vw; }
+}

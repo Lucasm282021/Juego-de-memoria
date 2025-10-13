@@ -386,3 +386,19 @@ body.main-menu {
     color: var(--modal-text-header);
     font-weight: 700;
 }
+
+/* === RESPONSIVE PARA EL MENÚ === */
+@media (max-width: 600px) {
+    .main-menu__container {
+        padding: 30px 20px; /* Reducir padding en móviles */
+        width: 90%;
+    }
+
+    .main-menu__title {
+        font-size: 2rem; /* Reducir tamaño del título */
+    }
+
+    .main-menu__button {
+        padding: 12px 20px; /* Reducir padding de los botones */
+    }
+}
