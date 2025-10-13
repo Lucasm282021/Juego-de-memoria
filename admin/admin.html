@@ -27,8 +27,10 @@
             <fieldset class="admin-panel__game-time">
                 <legend>Tiempo de juego (segundos)</legend>
                 <label for="gameTime">Duración:</label>
-                <input type="number" id="gameTime" name="gameTime" min="10" max="300" value="30" />
-                <button id="saveGameTime" type="button">Guardar Tiempo</button>
+                <div>
+                    <input type="number" id="gameTime" name="gameTime" min="10" max="300" value="30" />
+                    <button id="saveChangesBtn" type="button">Guardar Cambios</button>
+                </div>
             </fieldset>
         </section>
 
@@ -64,6 +66,19 @@
         <!-- Mensaje de estado -->
         <div class="admin-panel__status" id="statusMsg" aria-live="polite" role="status"></div>
     </main>
+
+    <!-- Modal de confirmación de contraseña -->
+    <div id="passwordConfirmModal" class="modal">
+        <div class="modal__content">
+            <span class="close-button" id="closePasswordModal">&times;</span>
+            <h3>Confirmar Cambios</h3>
+            <p>Ingresa la contraseña de administrador para guardar los cambios.</p>
+            <form id="passwordConfirmForm">
+                <input type="password" id="confirmPassword" placeholder="Contraseña" required class="form-input">
+                <button type="submit" class="modal__button modal__button--success">Confirmar</button>
+            </form>
+        </div>
+    </div>
 
     <script src="admin.js"></script>
 </body>

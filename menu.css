@@ -1,0 +1,261 @@
+/* === VARIABLES DE COLOR (tomadas de game.css) === */
+:root {
+    --color-bg-primary: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-text-primary: #e2e8f0;
+    --color-accent: #38bdf8;
+    --color-accent-hover: #f87171;
+}
+
+/* === ESTILOS GENERALES DEL MENÚ === */
+body.main-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.main-menu__container {
+    text-align: center;
+    background: var(--color-bg-secondary);
+    padding: 40px 60px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.main-menu__title {
+    font-size: 2.5rem;
+    color: var(--color-accent);
+    margin-bottom: 30px;
+}
+
+.main-menu__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-menu__button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-bg-primary);
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-family: 'Segoe UI', sans-serif; /* Asegura la misma fuente */
+}
+
+.main-menu__button:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+}
+
+.main-menu__footer {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.8rem;
+    color: #94a3b8; /* Usando color de texto secundario */
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.main-menu__copyright {
+    margin: 0;
+}
+
+/* === ESTILOS PARA MODAL DE TABLA DE TIEMPOS === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-tiempos-panel {
+    background: #fff;
+    max-width: 400px;
+    width: 90%;
+    margin: auto;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    text-align: center;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+}
+
+.modal-tiempos-titulo {
+    margin-bottom: 24px;
+    color: #2d3a4a;
+    font-weight: 600;
+    font-size: 1.3em;
+}
+
+.modal-tiempos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+.modal-tiempos-tabla th, .modal-tiempos-tabla td {
+    border-bottom: 1px solid #e0eafc;
+    padding: 8px 0;
+    color: #2d3a4a;
+}
+
+.modal-tiempos-tabla th {
+    background: #f5f8ff;
+    font-weight: 500;
+}
+
+.modal-tiempos-tabla tr:nth-child(1) td { background-color: #f3e765; }
+.modal-tiempos-tabla tr:nth-child(2) td { background-color: #cfd4d8; }
+.modal-tiempos-tabla tr:nth-child(3) td { background-color: #e7b388; }
+
+/* === ESTILOS PARA MODAL DE USUARIO === */
+.modal__content {
+    background-color: #ffffff;
+    padding: 24px 32px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+    position: relative; /* Para el botón de cierre */
+}
+
+.modal__content h3 {
+    color: var(--color-bg-primary);
+    font-size: 1.6rem;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.modal__content p {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.modal__button {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.modal__button--success {
+    background-color: var(--color-success, #22c55e);
+}
+
+.modal__button--success:hover {
+    background-color: var(--color-success-hover, #16a34a);
+}
+
+/* Sección de contraseña de admin */
+.password-section {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    margin: 0;
+}
+
+/* Control de audio */
+.main-menu__audio-control {
+    margin-top: 25px;
+}
+
+.audio-button {
+    background: none;
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.audio-button:hover {
+    background-color: var(--color-accent);
+    color: var(--color-bg-primary);
+    transform: scale(1.1);
+}
+
+.audio-button.off {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* Estadísticas en el menú */
+.main-menu__stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.main-menu__counter {
+    background-color: var(--color-bg-primary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-accent);
+}
+
+
+/* === ANIMACIONES (si no existen ya) === */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }

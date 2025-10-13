@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego de Memoria</title>
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body class="memory-game">
+  <div class="memory-game__container">
+    <header class="game-header">
+      <div class="game-header__item">
+        <a href="index.html" class="game-header__menu-button" id="resetButton">Menú Principal</a>
+      </div>
+      <div class="game-header__item game-header__item--timer">
+        <span id="timeCounter">00:00:00</span>
+      </div>
+    </header>
+    <main class="memory-game__main">
+      <!-- Tablero al centro -->
+      <section class="memory-board" id="gameBoard"></section>
+    </main>
+  </div>
+  <footer class="memory-game__footer">
+    <p class="memory-game__copyright">
+      © 2025 Montero Lucas Damián. Todos los derechos reservados.
+    </p>
+  </footer>
+  
+  <!-- Modales del juego -->
+  <div id="loseModal" class="modal" role="dialog" aria-labelledby="loseTitle" aria-hidden="true">
+    <div class="modal__content">
+      <h2 id="loseTitle">⏱️ Tiempo agotado</h2>
+      <p>¡No te rindas! La próxima vez lo conseguirás.</p>
+      <button id="AceptarButton">Aceptar</button>
+    </div>
+  </div>
+  
+  <div id="winModal" class="modal" role="dialog" aria-labelledby="winTitle" aria-hidden="true">
+    <div class="modal__content">
+      <h2 id="winTitle">🎉 ¡Victoria!</h2>
+      <p id="winMessage"></p>
+      <button id="winAcceptButton">Aceptar</button> 
+    </div> 
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

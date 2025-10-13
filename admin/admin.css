@@ -1,234 +1,203 @@
-/* === TÍTULO PRINCIPAL === */
-.admin-panel__title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1e293b;
+/* === VARIABLES & ESTILOS GLOBALES === */
+:root {
+    /* Tema Oscuro */
+    --admin-bg: #0f172a;
+    --admin-card-bg: #1e293b;
+    --admin-text-primary: #e2e8f0;
+    --admin-text-secondary: #94a3b8;
+    --admin-border-color: #334155;
+    --admin-primary-color: #3b82f6;
+    --admin-primary-hover: #2563eb;
+    --admin-danger-color: #ef4444;
+    --admin-danger-hover: #dc2626;
+    --admin-success-color: #10b981;
+    --admin-success-hover: #059669;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--admin-bg);
+    color: var(--admin-text-primary);
+    margin: 0;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+/* === LAYOUT PRINCIPAL === */
+.admin-panel {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-panel__header {
+    margin-bottom: 2rem;
     text-align: center;
-    margin-bottom: 16px;
 }
 
-/* === TÍTULOS DE SECCIÓN === */
+.admin-panel__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--admin-text-primary);
+}
+
+.admin-panel__layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Diseño de tarjetas para cada sección */
+.admin-panel__actions,
+.admin-panel__counters,
+.admin-panel__table {
+    background-color: var(--admin-card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--admin-border-color);
+}
+
+/* La tabla ocupa todo el ancho en la siguiente fila */
+.admin-panel__table {
+    grid-column: 1 / -1;
+}
+
 .admin-panel__section-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #3b82f6;
-    margin-bottom: 12px;
-    border-left: 4px solid #3b82f6;
-    padding-left: 12px;
+    color: var(--admin-text-primary);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--admin-border-color);
+    padding-bottom: 0.75rem;
 }
 
-/* === LISTA DE CONTADORES === */
+/* === SECCIÓN DE ACCIONES Y BOTONES === */
+.admin-panel__buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.admin-panel__buttons button {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.admin-panel__buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.admin-panel__buttons button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos específicos de botones */
+#resetVisits, #resetWins, #resetAll {
+    background-color: transparent;
+    color: var(--admin-text-secondary);
+    border-color: var(--admin-border-color);
+}
+#resetVisits:hover, #resetWins:hover, #resetAll:hover {
+    background-color: var(--admin-border-color);
+    color: var(--admin-text-primary);
+}
+
+#deleteTable {
+    background-color: var(--admin-danger-color);
+    color: #fff;
+}
+#deleteTable:hover {
+    background-color: var(--admin-danger-hover);
+}
+
+#exportExcel {
+    background-color: var(--admin-success-color);
+    color: #fff;
+}
+#exportExcel:hover {
+    background-color: var(--admin-success-hover);
+}
+
+#returnGame {
+    background-color: var(--admin-primary-color);
+    color: #fff;
+}
+#returnGame:hover {
+    background-color: var(--admin-primary-hover);
+}
+
+/* === SECCIÓN DE CONTADORES === */
 .admin-panel__stats {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 1rem;
-    color: #334155;
 }
 
 .admin-panel__stats li {
-    margin: 8px 0;
+    font-size: 1.1rem;
     font-weight: 500;
-}
-
-/* === CONTENEDOR DE BOTONES === */
-.admin-panel__buttons {
+    color: var(--admin-text-secondary);
+    margin-bottom: 1rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 16px 0;
+    justify-content: space-between;
 }
 
-/* === BOTONES LLAMATIVOS === */
-.admin-panel__buttons button {
-    padding: 14px 28px;
-    font-size: 16px;
+.admin-panel__stats li span {
     font-weight: 700;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    position: relative;
-    overflow: hidden;
-    color: #ffffff;
-    background: #3b82f6; /* Azul vibrante */
-}
-
-/* === EFECTO DE ONDA AL HACER CLICK === */
-.admin-panel__buttons button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s ease, height 0.4s ease;
-}
-
-.admin-panel__buttons button:active::after {
-    width: 200%;
-    height: 200%;
-}
-
-/* === HOVER INTENSO === */
-.admin-panel__buttons button:hover {
-    background: linear-gradient(135deg, #0284c7, #2563eb);
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-}
-
-/* === FOCUS ACCESIBLE === */
-.admin-panel__buttons button:focus-visible {
-    outline: 3px solid #3b82f6;
-    outline-offset: 3px;
-}
-
-/* === ACTIVE FEEDBACK === */
-.admin-panel__buttons button:active {
-    transform: scale(0.97);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-
-.admin-panel__actions button {
-    padding: 12px 24px;
-    font-size: 15px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    letter-spacing: 0.4px;
-}
-
-.admin-panel__actions button.primary {
-    background: linear-gradient(135deg, #3b82f6, #60a5fa);
-    color: #ffffff;
-}
-
-.admin-panel__actions button.primary:hover {
-    background: linear-gradient(135deg, #2563eb, #3b82f6);
-    transform: translateY(-2px) scale(1.03);
-}
-
-.admin-panel__actions button.danger {
-    background: linear-gradient(135deg, #ef4444, #f87171);
-    color: #ffffff;
-}
-
-.admin-panel__actions button.danger:hover {
-    background: linear-gradient(135deg, #dc2626, #ef4444);
-    transform: translateY(-2px) scale(1.03);
-}
-
-.admin-panel__actions button.secondary {
-    background: #f3f4f6;
-    color: #1f2937;
-    border: 1px solid #d1d5db;
-}
-
-.admin-panel__actions button.secondary:hover {
-    background: #e5e7eb;
-    transform: translateY(-1px);
-}
-
-/* === TABLA DE PARTICIPANTES === */
-.admin-panel__table {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 0;
-}
-
-.admin-panel__table-wrapper {
-    max-height: 320px;
-    overflow-y: auto;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
-    scrollbar-width: thin;
-    scrollbar-color: #94a3b8 #f1f5f9;
-}
-
-.admin-panel__table table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    min-width: 480px;
-}
-
-.admin-panel__table th,
-.admin-panel__table td {
-    padding: 12px 14px;
-    text-align: left;
-    color: #1e293b;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.admin-panel__table th {
-    background-color: #f1f5f9;
-    font-weight: 600;
-    color: #475569;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-.admin-panel__table tbody tr:nth-child(even) {
-    background-color: #f9fafb;
-}
-
-.admin-panel__table td:last-child {
-    font-weight: 600;
-    color: #10b981;
+    color: var(--admin-text-primary);
+    background-color: #0f172a; /* Fondo un poco más oscuro que la tarjeta */
+    padding: 4px 10px;
+    border-radius: 6px;
 }
 
 /* === CAMPO DE TIEMPO DE JUEGO === */
 .admin-panel__game-time {
-    margin-top: 24px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-    background-color: #f9fafb;
-    font-size: 0.95rem;
-    width: 100%;
+    margin-top: 1.5rem;
+    border: none;
+    padding: 0;
 }
 
 .admin-panel__game-time legend {
     font-weight: 600;
-    color: #475569;
-    margin-bottom: 8px;
+    color: var(--admin-text-secondary);
+    font-size: 0.9rem;
+    padding: 0;
+    margin-bottom: 0.5rem;
 }
 
-.admin-panel__game-time label {
-    margin-right: 8px;
-    color: #334155;
+.admin-panel__game-time div {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .admin-panel__game-time input[type="number"] {
-    padding: 6px 10px;
-    border: 1px solid #cbd5e1;
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--admin-border-color);
     border-radius: 6px;
-    width: 80px;
-    font-size: 0.95rem;
-    margin-right: 8px;
+    background-color: var(--admin-bg);
+    color: var(--admin-text-primary);
+    font-size: 1rem;
 }
 
 .admin-panel__game-time button {
     padding: 8px 16px;
-    font-size: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
     border-radius: 6px;
-    background-color: #10b981;
+    background-color: var(--admin-primary-color);
     color: #ffffff;
     border: none;
     cursor: pointer;
@@ -236,36 +205,166 @@
 }
 
 .admin-panel__game-time button:hover {
-    background-color: #059669;
+    background-color: var(--admin-primary-hover);
+}
+
+/* === TABLA DE PARTICIPANTES === */
+.admin-panel__table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid var(--admin-border-color);
+    border-radius: 8px;
+}
+
+.admin-panel__table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.admin-panel__table th,
+.admin-panel__table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--admin-border-color);
+}
+
+.admin-panel__table th {
+    background-color: var(--admin-bg);
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.admin-panel__table tbody tr:nth-child(even) {
+    background-color: #2a3a50; /* Un poco más claro que el fondo de la tarjeta */
+}
+
+.admin-panel__table tbody tr:hover {
+    background-color: #334155;
+}
+
+/* === MENSAJE DE ESTADO (Toast-like) === */
+.admin-panel__status {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    z-index: 1001;
+}
+
+.admin-panel__status:not(:empty) {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -10px);
+}
+
+.status--success {
+    background-color: var(--admin-success-color);
+}
+
+.status--error {
+    background-color: var(--admin-danger-color);
 }
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
     .admin-panel__layout {
         grid-template-columns: 1fr;
     }
-
-    .admin-panel__actions,
-    .admin-panel__counters,
-    .admin-panel__table {
-        margin-top: 24px;
-    }
-
     .admin-panel__buttons {
-        flex-direction: column;
-        width: 100%;
+        grid-template-columns: 1fr 1fr;
     }
+}
 
-    .admin-panel__actions button {
-        width: 100%;
-    }
+/* === ESTILOS PARA MODALES (reutilizados de menu.css y adaptados) === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+}
 
-    .admin-panel__game-time {
-        text-align: center;
-    }
+.modal__content {
+    background-color: var(--admin-card-bg);
+    color: var(--admin-text-primary);
+    padding: 24px 32px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
 
-    .admin-panel__table-wrapper {
-        max-height: none;
-        overflow-x: auto;
-    }
+.modal__content h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.modal__content p {
+    color: var(--admin-text-secondary);
+    margin-bottom: 20px;
+}
+
+.close-button {
+    color: var(--admin-text-secondary);
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--admin-border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: var(--admin-bg);
+    color: var(--admin-text-primary);
+}
+
+.modal__button {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal__button--success {
+    background-color: var(--admin-success-color);
+    color: #fff;
+}
+
+.modal__button--success:hover {
+    background-color: var(--admin-success-hover);
 }

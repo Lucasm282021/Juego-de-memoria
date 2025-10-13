@@ -18,22 +18,15 @@ let matchedPairs = 0;
 let gameStarted = false;
 
 let timerInterval;
-let millisecondsElapsed = 0;
-let loseTimeout = null;
-
-// Modal de usuario
-const userModal = document.getElementById('userModal');
-const userForm = document.getElementById('userForm');
-const userNameInput = document.getElementById('userName');
-const userEmailInput = document.getElementById('userEmail');
+let millisecondsRemaining = 0;
 
 const gameBoard = document.getElementById('gameBoard');
-const visitCountEl = document.getElementById('visitCount');
-const winCountEl = document.getElementById('winCount');
 const timeCounterEl = document.getElementById('timeCounter');
 const resetButton = document.getElementById('resetButton');
-const startButton = document.getElementById('startButton');
 const loseSound = new Audio('sound/negative_beeps-6008.mp3'); // Reemplazá con la ruta real
+const closeUserModal = document.getElementById('closeUserModal');
+const tickSound = new Audio('sound/clock-tick.mp3'); // Asegúrate de tener este archivo de sonido
+tickSound.loop = true;
 const winSound = new Audio('sound/win.mp3'); // Reemplazá con la ruta real
 
 // === CONTADORES ===
@@ -41,7 +34,6 @@ function updateVisitCount() {
     let visits = localStorage.getItem('memoryGameVisits') || 0;
     visits++;
     localStorage.setItem('memoryGameVisits', visits);
-    visitCountEl.textContent = visits;
 }
 
 // === TIEMPOS DE GANADORES ===
@@ -51,7 +43,7 @@ function guardarTiempoGanador(tiempo) {
     let user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
     // Validar datos
     let nombre = typeof user.nombre === 'string' && user.nombre.trim() ? user.nombre.trim() : 'Desconocido';
-    let correo = typeof user.correo === 'string' && user.correo.trim() ? user.correo.trim() : '-';
+    let correo = user.correo || '-'; // Usar el valor guardado o un guion
     let tiempoValido = typeof tiempo === 'string' && tiempo.trim() ? tiempo.trim() : '00:00:00';
     tiempos.push({ nombre, correo, tiempo: tiempoValido });
     localStorage.setItem('memoryGameTiempos', JSON.stringify(tiempos));
@@ -65,60 +57,72 @@ function updateWinCount() {
     let wins = localStorage.getItem('memoryGameWins') || 0;
     wins++;
     localStorage.setItem('memoryGameWins', wins);
-    winCountEl.textContent = wins;
-}
-
-function loadCounters() {
-    visitCountEl.textContent = localStorage.getItem('memoryGameVisits') || 0;
-    winCountEl.textContent = localStorage.getItem('memoryGameWins') || 0;
 }
 
 // === TEMPORIZADOR ===
 function formatTime(ms) {
-    const totalSeconds = Math.floor(ms / 1000);
+    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    const milliseconds = ms % 1000;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(3, '0')}`;
+    const hundredths = Math.floor((ms % 1000) / 10);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(hundredths).padStart(2, '0')}`;
 }
 
 function startTimer() {
     clearInterval(timerInterval);
-    clearTimeout(loseTimeout);
-    millisecondsElapsed = 0;
-    timeCounterEl.textContent = formatTime(millisecondsElapsed);
-
-    timerInterval = setInterval(() => {
-        millisecondsElapsed += 10;
-        timeCounterEl.textContent = formatTime(millisecondsElapsed);
-    }, 10);
+    tickSound.pause(); // Asegurarse de que el tic-tac esté detenido al inicio
+    timeCounterEl.parentElement.classList.remove('low-time'); // Limpiar estado visual
 
     // Obtener tiempo de juego desde localStorage o usar 30s por defecto
     let tiempoJuego = parseInt(localStorage.getItem('memoryGameTime')) || 30;
-    loseTimeout = setTimeout(() => {
-        stopTimer();
-        gameStarted = false;
-        // Detener audio al perder
-        if (gameAudio) {
-            gameAudio.pause();
-            gameAudio.currentTime = 0;
+    millisecondsRemaining = tiempoJuego * 1000;
+    timeCounterEl.textContent = formatTime(millisecondsRemaining);
+
+    let isTicking = false;
+    timerInterval = setInterval(() => {
+        millisecondsRemaining -= 10;
+        timeCounterEl.textContent = formatTime(millisecondsRemaining);
+
+        // Añadir clase y sonido cuando queden 5 segundos o menos
+        if (millisecondsRemaining > 0 && millisecondsRemaining <= 5000) {
+            timeCounterEl.parentElement.classList.add('low-time');
+            if (!isTicking) {
+                tickSound.play();
+                isTicking = true;
+            }
         }
-        // Reproducir sonido de derrota
-        loseSound.currentTime = 0;
-        loseSound.play();
-        document.getElementById('loseModal').style.display = 'flex';
-        initGame();
-    }, tiempoJuego * 1000);
+
+        if (millisecondsRemaining <= 0) {
+            stopTimer();
+            gameStarted = false;
+            // Detener audio al perder
+            if (gameAudio) {
+                gameAudio.pause();
+                gameAudio.currentTime = 0;
+            }
+            // Detener sonido de tic-tac
+            tickSound.pause();
+            tickSound.currentTime = 0;
+            // Reproducir sonido de derrota
+            loseSound.currentTime = 0;
+            loseSound.play();
+            document.getElementById('loseModal').style.display = 'flex';
+        }
+    }, 10);
 }
 
 function stopTimer() {
     clearInterval(timerInterval);
-    clearTimeout(loseTimeout);
+    tickSound.pause();
+    tickSound.currentTime = 0;
 }
 
 function resetTimer() {
     stopTimer();
-    millisecondsElapsed = 0;
+    timeCounterEl.parentElement.classList.remove('low-time');
+    tickSound.pause();
+    let tiempoJuego = parseInt(localStorage.getItem('memoryGameTime')) || 30;
+    millisecondsRemaining = tiempoJuego * 1000;
     timeCounterEl.textContent = '00:00:00';
 }
 
@@ -180,19 +184,26 @@ function flipCard(card) {
             winSound.play();
         }
         setTimeout(() => {
-            const tiempoFinal = formatTime(millisecondsElapsed);
+            const tiempoFinal = formatTime(millisecondsRemaining); // Aunque se detiene, usamos el valor restante para calcular el tiempo
             guardarTiempoGanador(tiempoFinal);
+
+            // Calcular el tiempo que tardó el jugador
+            const tiempoJuego = parseInt(localStorage.getItem('memoryGameTime')) || 30;
+            const tiempoTomadoMs = (tiempoJuego * 1000) - millisecondsRemaining;
+            const tiempoTomadoFormateado = formatTime(tiempoTomadoMs);
 
             // Obtener ranking actualizado
             const tiempos = obtenerTiemposGanadores();
             const parseTime = (str) => {
-                const [min, sec, ms] = str.split(':').map(Number);
-                return (min * 60 * 1000) + (sec * 1000) + ms;
+                if (!str || !str.includes(':') || !str.includes('.')) return -1;
+                const [min, secAndHundredths] = str.split(':');
+                const [sec, hundredths] = secAndHundredths.split('.');
+                return (parseInt(min) * 60 * 1000) + (parseInt(sec) * 1000) + (parseInt(hundredths) * 10);
             };
 
             const tiemposOrdenados = tiempos
                 .filter(t => t.tiempo && t.tiempo.includes(':'))
-                .sort((a, b) => parseTime(a.tiempo) - parseTime(b.tiempo));
+                .sort((a, b) => parseTime(b.tiempo) - parseTime(a.tiempo)); // Orden descendente: más tiempo restante es mejor
 
             const user = JSON.parse(localStorage.getItem('memoryGameUser') || '{}');
             const posicion = tiemposOrdenados.findIndex(t => t.nombre === user.nombre) + 1;
@@ -202,7 +213,7 @@ function flipCard(card) {
             const winMessage = document.getElementById('winMessage');
             winMessage.innerHTML = `
                 Has emparejado todos los logos.<br>
-                <span class="win-highlight win-highlight--tiempo">⏱️ Tiempo logrado: ${tiempoFinal}</span>
+                <span class="win-highlight win-highlight--tiempo">⏱️ Tu tiempo: ${tiempoTomadoFormateado}</span>
                 <span class="win-highlight win-highlight--posicion">🏅 Posición en el ranking: ${posicion}</span>
                 `;
                 winModal.style.display = 'flex';
@@ -221,124 +232,59 @@ function flipCard(card) {
 }
 
 // === EVENTOS ===
-const tablaButton = document.getElementById('tablaButton');
-const tablaTiemposModal = document.getElementById('tablaTiemposModal');
-const cerrarTablaTiempos = document.getElementById('cerrarTablaTiempos');
-const tablaTiempos = document.getElementById('tablaTiempos').getElementsByTagName('tbody')[0];
 const aceptarButton = document.getElementById('AceptarButton');
 const aceptarWinButton = document.getElementById('winAcceptButton');
 
 aceptarButton.addEventListener('click', () => {
-    document.getElementById('loseModal').style.display = 'none';
-    initGame();
+    // Detener audio al volver al menú
+    if (gameAudio) {
+        gameAudio.pause();
+        gameAudio.currentTime = 0;
+    }
+    // Redirigir al menú principal
+    window.location.href = 'index.html';
 });
+
 
 aceptarWinButton.addEventListener('click', () => {
-    document.getElementById('winModal').style.display = 'none';
-    initGame();
-});
-
-tablaButton.addEventListener('click', () => {
-    const tiempos = obtenerTiemposGanadores();
-
-    // Convertir tiempo a milisegundos
-    const parseTime = (str) => {
-        const [min, sec, ms] = str.split(':').map(Number);
-        return (min * 60 * 1000) + (sec * 1000) + ms;
-    };
-
-    // Ordenar por tiempo ascendente y limitar a los 10 primeros
-    const tiemposOrdenados = tiempos
-        .filter(t => t.tiempo && t.tiempo.includes(':'))
-        .sort((a, b) => parseTime(a.tiempo) - parseTime(b.tiempo))
-        .slice(0, 10); // ✅ Limitar a top 10
-
-    tablaTiempos.innerHTML = '';
-
-    if (tiemposOrdenados.length === 0) {
-        tablaTiempos.innerHTML = '<tr><td colspan="3">No hay tiempos registrados.</td></tr>';
-    } else {
-    tiemposOrdenados.forEach((t, i) => {
-        const row = document.createElement('tr');
-
-        // Medalla según posición
-        let medalla = '';
-        if (i === 0) medalla = '🥇';
-        else if (i === 1) medalla = '🥈';
-        else if (i === 2) medalla = '🥉';
-
-        row.innerHTML = `
-            <td>${medalla || i + 1}</td>
-            <td>${t.nombre || 'Desconocido'}</td>
-            <td>${t.tiempo}</td>
-        `;
-        tablaTiempos.appendChild(row);
-        });
+    // Detener audio al volver al menú
+    if (gameAudio) {
+        gameAudio.pause();
+        gameAudio.currentTime = 0;
     }
-
-    tablaTiemposModal.style.display = 'flex';
+    // Redirigir al menú principal
+    window.location.href = 'index.html';
 });
 
-
-cerrarTablaTiempos.addEventListener('click', () => {
-    tablaTiemposModal.style.display = 'none';
-});
-// Mostrar modal al hacer click en "Nuevo Juego"
-startButton.addEventListener('click', () => {
-    resetTimer();
-    gameStarted = false;
-    initGame();
+resetButton.addEventListener('click', (e) => {
     // Detener audio al reiniciar
     if (gameAudio) {
         gameAudio.pause();
         gameAudio.currentTime = 0;
     }
-    userModal.style.display = 'flex';
-    userNameInput.value = '';
-    userEmailInput.value = '';
-    userNameInput.focus();
+    // No prevenimos la navegación por defecto del enlace (e.preventDefault())
 });
 
-resetButton.addEventListener('click', () => {
-    resetTimer();
-    gameStarted = false;
-    initGame();
-    // Detener audio al reiniciar
-    if (gameAudio) {
-        gameAudio.pause();
-        gameAudio.currentTime = 0;
-    }
-});
-
-// Validar y aceptar datos del usuario
-userForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const nombre = userNameInput.value.trim();
-    const correo = userEmailInput.value.trim();
-    if (!nombre || !correo || !correo.match(/^\S+@\S+\.\S+$/)) {
-        alert('Por favor ingresa un nombre y un correo electrónico válido.');
-        return;
-    }
-    localStorage.setItem('memoryGameUser', JSON.stringify({ nombre, correo }));
-    userModal.style.display = 'none';
-    // ✅ Aumentar contador de visitas al iniciar juego
+function startGame() {
     updateVisitCount();
-    // Iniciar el juego
-    resetTimer();
+    initGame();
     startTimer();
     gameStarted = true;
-    initGame();
-    // Reproducir audio al iniciar el juego
+
+    const musicState = localStorage.getItem('memoryGameMusic') || 'on';
+    if (musicState === 'off') return; // No reproducir música si está desactivada
+
     if (gameAudio) {
         gameAudio.pause();
         gameAudio.currentTime = 0;
     }
-    gameAudio = new Audio('sound/cort_infantilanimada_dm-248977.mp3');
-    gameAudio.loop = true;
-    gameAudio.play();
-});
-// === INICIO ===
-//updateVisitCount();
-loadCounters();
-initGame();
+    // Solo crea y reproduce el audio si no existe ya
+    if (!gameAudio) {
+        gameAudio = new Audio('sound/cort_infantilanimada_dm-248977.mp3');
+        gameAudio.loop = true;
+    }
+    gameAudio.play().catch(error => console.log("La reproducción automática fue bloqueada por el navegador.", error));
+}
 
+// === INICIO ===
+startGame();
