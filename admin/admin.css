@@ -14,6 +14,11 @@
     --admin-success-hover: #059669;
 }
 
+/* Modelo de caja universal para un layout más predecible */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     background-color: var(--admin-bg);
@@ -46,21 +51,6 @@ body {
     gap: 1.5rem;
 }
 
-/* Diseño de tarjetas para cada sección */
-.admin-panel__actions,
-.admin-panel__counters,
-.admin-panel__images,
-.admin-panel__table {
-    background-color: var(--admin-card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--admin-border-color);
-}
-
-/* La tabla ocupa todo el ancho en la siguiente fila */
-/* .admin-panel__table { grid-column: 1 / -1; } -> Ya no es necesario con una sola columna */
-
 .admin-panel__section-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -71,10 +61,21 @@ body {
     padding-bottom: 0.75rem;
 }
 
+/* Diseño de tarjetas para cada sección */
+.admin-panel__actions,
+.admin-panel__counters,
+.admin-panel__images,
+.admin-panel__table {
+    background-color: var(--admin-card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--admin-border-color);
+}
+
 /* === SECCIÓN DE ACCIONES Y BOTONES === */
 .admin-panel__buttons {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
 }
 
@@ -294,7 +295,7 @@ body {
         padding: 1rem;
     }
     .admin-panel__buttons {
-        flex-direction: column; /* Apila todos los botones verticalmente */
+        /* La grilla ya es responsive, no se necesita cambio específico */
     }
     .admin-panel__game-time div {
         flex-direction: column; /* Apila label e input verticalmente */
@@ -305,10 +306,19 @@ body {
         max-width: none; /* Se anula el max-width de escritorio */
         box-sizing: border-box;
     }
-    .admin-panel__table-wrapper { overflow-x: auto; } /* Permite scroll horizontal en la tabla */
+    .admin-panel__table-wrapper {
+        overflow-x: auto; /* Permite scroll horizontal en la tabla */
+    }
 }
 
-/* === ESTILOS PARA MODALES (reutilizados de menu.css y adaptados) === */
+/* === RESPONSIVE PARA ESCRITORIO (Layout de 2 columnas) === */
+@media (min-width: 992px) {
+    .admin-panel__layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .admin-panel__table { grid-column: 1 / -1; } /* La tabla ocupa todo el ancho */
+}
+
 .modal {
     display: none;
     position: fixed;
