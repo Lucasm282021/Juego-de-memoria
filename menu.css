@@ -213,6 +213,46 @@ body.main-menu {
     margin-bottom: 20px;
 }
 
+/* Estilos para el botón de Google y el separador */
+#googleSignInContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.modal__separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #ccc;
+    margin: 1rem 0;
+}
+
+.modal__separator::before,
+.modal__separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem; /* Mantiene el espaciado que tenía el input */
+}
+
+.input-wrapper .form-input {
+    margin-bottom: 0; /* Quita el margen del input para que lo maneje el wrapper */
+}
+
+.toggle-password-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
 .form-input {
     width: 100%;
     padding: 0.75rem;

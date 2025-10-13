@@ -1,13 +1,32 @@
+// === LÓGICA DE GOOGLE SIGN-IN ===
+// Esta función debe estar en el scope global para que Google la pueda llamar.
+function handleGoogleSignIn(response) {
+    // Decodificar el token JWT para obtener los datos del usuario
+    // No es necesario una librería externa para una decodificación simple del payload
+    const base64Url = response.credential.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    const userDataFromGoogle = JSON.parse(jsonPayload);
+
+    const userData = {
+        nombre: userDataFromGoogle.name,
+        correo: userDataFromGoogle.email,
+    };
+    localStorage.setItem('memoryGameUser', JSON.stringify(userData));
+    window.location.href = document.getElementById('startGameLink').href;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Elementos del DOM ---
     const userModal = document.getElementById('userModal');
     const userForm = document.getElementById('userForm');
     const userNameInput = document.getElementById('userName');
-    const userEmailInput = document.getElementById('userEmail');
-    const userEmailSection = document.getElementById('userEmailSection');
+    const userSecondInput = document.getElementById('userSecondInput');
+    const togglePassword = document.getElementById('togglePassword');
     const startGameLink = document.getElementById('startGameLink');
-    const adminPasswordSection = document.getElementById('adminPasswordSection');
-    const adminPasswordInput = document.getElementById('adminPassword');
     const submitButton = document.getElementById('submitButton');
     const closeUserModal = document.getElementById('closeUserModal');
     const themeToggleButton = document.getElementById('themeToggleButton');
@@ -78,14 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mostrar/ocultar campo de contraseña para admin
     userNameInput.addEventListener('input', () => {
         if (userNameInput.value.trim().toLowerCase() === 'admin') {
-            adminPasswordSection.style.maxHeight = '60px'; // Altura suficiente para el input
-            userEmailSection.style.maxHeight = '0';
-            userEmailInput.required = false; // No requerir email para admin
+            userSecondInput.type = 'password';
+            userSecondInput.placeholder = 'Contraseña de Administrador';
+            userSecondInput.required = true;
+            userSecondInput.value = ''; // Limpiar el campo al cambiar a modo admin
+            togglePassword.style.display = 'block';
             submitButton.textContent = 'Acceder';
         } else {
-            adminPasswordSection.style.maxHeight = '0';
-            userEmailSection.style.maxHeight = '60px';
-            userEmailInput.required = true; // Requerir email para jugadores
+            // Si el campo era de contraseña, lo limpiamos antes de cambiarlo de vuelta a email.
+            if (userSecondInput.type === 'password') {
+                userSecondInput.value = '';
+            }
+            userSecondInput.type = 'email';
+            userSecondInput.placeholder = 'ejemplo@correo.com';
+            userSecondInput.required = true;
+            togglePassword.style.display = 'none';
             submitButton.textContent = 'Empezar a Jugar';
         }
     });
@@ -95,15 +121,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Siempre previene la navegación para mostrar el modal primero
         event.preventDefault();
         userModal.style.display = 'flex';
-        userNameInput.value = 'jugador'; // Valor por defecto
-        userEmailInput.required = true; // Asegurarse de que el email sea requerido por defecto
-        userEmailSection.style.maxHeight = '60px'; // Mostrar campo de email por defecto
-        userEmailInput.value = ''; // Limpiar correo
-        adminPasswordInput.value = ''; // Limpiar contraseña
-        adminPasswordSection.style.maxHeight = '0'; // Ocultar campo
+        userNameInput.value = ''; // Limpiar nombre
+        userSecondInput.type = 'email'; // Asegurarse de que sea tipo email
+        userSecondInput.placeholder = 'ejemplo@correo.com'; // Mantener el placeholder
+        userSecondInput.required = true;
+        togglePassword.style.display = 'none';
+        userSecondInput.value = 'ejemplo@correo.com'; // Establecer valor por defecto
         submitButton.textContent = 'Empezar a Jugar';
         userNameInput.focus();
     });
+
+    // Lógica para mostrar/ocultar contraseña (mantener presionado)
+    const showPassword = () => {
+        userSecondInput.type = 'text';
+        togglePassword.textContent = '🙈';
+    };
+
+    const hidePassword = () => {
+        userSecondInput.type = 'password';
+        togglePassword.textContent = '👁️';
+    };
+
+    togglePassword.addEventListener('mousedown', showPassword);
+    togglePassword.addEventListener('mouseup', hidePassword);
+    togglePassword.addEventListener('mouseleave', hidePassword); // Oculta si el mouse se va del icono
+
+    togglePassword.addEventListener('touchstart', showPassword, { passive: true });
+    togglePassword.addEventListener('touchend', hidePassword);
 
     // Desactivar la validación nativa del navegador para manejarla manualmente
     userForm.setAttribute('novalidate', true);
@@ -115,18 +159,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Flujo especial para el administrador
         if (nombre === 'admin') {
-            const password = adminPasswordInput.value;
+            const password = userSecondInput.value;
             if (password === '31381993') {
                 window.location.href = 'admin/admin.html';
             } else {
-                alert('Contraseña incorrecta.');
-                adminPasswordInput.focus();
+                alert('Contraseña incorrecta.'); // Podríamos mejorar este feedback
+                userSecondInput.focus();
             }
             return;
         }
 
         // Flujo normal para jugadores
-        const email = userEmailInput.value.trim();
+        const email = userSecondInput.value.trim();
         if (!userNameInput.value.trim() || !email || !email.match(/^\S+@\S+\.\S+$/)) {
             alert('Por favor, ingresa un nombre y un correo electrónico válido.');
             return;

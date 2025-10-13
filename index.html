@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juego de Memoria - Menú Principal</title>
     <link rel="stylesheet" href="menu.css" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="main-menu">
     <div class="main-menu__container">
@@ -53,13 +54,20 @@
             <span class="close-button" id="closeUserModal">&times;</span>
             <h3 id="userTitle">Datos del Jugador</h3>
             <p>Ingresa tus datos para empezar y guardar tu puntaje.</p>
+
             <form id="userForm">
                 <input type="text" id="userName" placeholder="Nombre del Jugador" required class="form-input">
-                <div id="userEmailSection" class="collapsible-section">
-                    <input type="email" id="userEmail" placeholder="Correo electrónico" required class="form-input">
+                <div class="input-wrapper">
+                    <input type="email" id="userSecondInput" placeholder="Correo electrónico" required class="form-input">
+                    <span id="togglePassword" class="toggle-password-icon" style="display: none;">👁️</span>
                 </div>
-                <div id="adminPasswordSection" class="password-section">
-                    <input type="password" id="adminPassword" placeholder="Contraseña de Administrador" class="form-input">
+                <div class="modal__separator"><span>o</span></div>
+                <!-- Contenedor para el botón de Google Sign-In -->
+                <div id="googleSignInContainer">
+                    <div id="g_id_onload" data-client_id="TU_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleSignIn" data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left">
+                    </div>
                 </div>
                 <button type="submit" id="submitButton" class="modal__button modal__button--success">Empezar a Jugar</button>
             </form>
