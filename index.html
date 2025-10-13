@@ -9,8 +9,10 @@
 <body class="main-menu">
     <div class="main-menu__container">
         <h1 class="main-menu__title">Juego de Memoria</h1>
+        <p class="main-menu__subtitle">Pon a prueba tu memoria y encuentra los pares</p>
         <nav class="main-menu__nav">
             <a href="game.html" class="main-menu__button" id="startGameLink">Nuevo Juego</a>
+            <button class="main-menu__button" id="instructionsButton">Instrucciones</button>
             <button class="main-menu__button" id="tablaButton">Tabla de Tiempos</button>
         </nav>
         <div class="main-menu__stats">
@@ -19,6 +21,7 @@
         </div>
         <div class="main-menu__audio-control">
             <button id="musicToggleButton" class="audio-button" aria-label="Control de música">🎵</button>
+            <button id="themeToggleButton" class="audio-button" aria-label="Alternar tema">🌙</button>
         </div>
     </div>
 
@@ -52,11 +55,25 @@
             <p>Ingresa tus datos para empezar y guardar tu puntaje.</p>
             <form id="userForm">
                 <input type="text" id="userName" placeholder="Nombre del Jugador" required class="form-input">
+                <div id="userEmailSection" class="collapsible-section">
+                    <input type="email" id="userEmail" placeholder="Correo electrónico" required class="form-input">
+                </div>
                 <div id="adminPasswordSection" class="password-section">
                     <input type="password" id="adminPassword" placeholder="Contraseña de Administrador" class="form-input">
                 </div>
                 <button type="submit" id="submitButton" class="modal__button modal__button--success">Empezar a Jugar</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal para Instrucciones -->
+    <div id="instructionsModal" class="modal">
+        <div class="modal__content">
+            <span class="close-button" id="cerrarInstructions">&times;</span>
+            <h3>Instrucciones del Juego</h3>
+            <div id="instructionsContent" class="instructions-text">
+                <!-- El contenido se cargará aquí desde instrucciones.txt -->
+            </div>
         </div>
     </div>
 

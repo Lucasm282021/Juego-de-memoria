@@ -1,13 +1,17 @@
-const logos = [
-    'Del_Click.png', 'Del_Click.png',
-    'Ransomware.png', 'Ransomware.png',
-    'ISFDyT26.png', 'ISFDyT26.png',
-    'Phishing.png', 'Phishing.png',
-    'LogoDS.png', 'LogoDS.png',
-    'Scareware.png', 'Scareware.png',
-    'Spyware.png', 'Spyware.png',
-    'Spoofing.png', 'Spoofing.png'
-];
+function getGameLogos() {
+    const defaultLogos = [
+        'Del_Click.png', 'Ransomware.png', 'ISFDyT26.png', 'Phishing.png',
+        'LogoDS.png', 'Scareware.png', 'Spyware.png', 'Spoofing.png'
+    ];
+    const savedLogos = JSON.parse(localStorage.getItem('memoryGameImages'));
+
+    const logosToUse = savedLogos && savedLogos.length === 8 ? savedLogos : defaultLogos;
+
+    // Duplicar cada logo para tener los pares
+    return logosToUse.flatMap(logo => [logo, logo]);
+}
+
+let logos = getGameLogos();
 
 let gameAudio = null;
 let shuffledLogos = [];
@@ -77,14 +81,16 @@ function startTimer() {
     let tiempoJuego = parseInt(localStorage.getItem('memoryGameTime')) || 30;
     millisecondsRemaining = tiempoJuego * 1000;
     timeCounterEl.textContent = formatTime(millisecondsRemaining);
+    // Obtener tiempo de alerta desde localStorage o usar 5s por defecto
+    const alertTime = (parseInt(localStorage.getItem('memoryGameAlertTime')) || 5) * 1000;
 
     let isTicking = false;
     timerInterval = setInterval(() => {
         millisecondsRemaining -= 10;
         timeCounterEl.textContent = formatTime(millisecondsRemaining);
 
-        // Añadir clase y sonido cuando queden 5 segundos o menos
-        if (millisecondsRemaining > 0 && millisecondsRemaining <= 5000) {
+        // Añadir clase y sonido cuando el tiempo restante sea menor o igual al umbral de alerta
+        if (millisecondsRemaining > 0 && millisecondsRemaining <= alertTime) {
             timeCounterEl.parentElement.classList.add('low-time');
             if (!isTicking) {
                 tickSound.play();
@@ -128,6 +134,7 @@ function resetTimer() {
 
 // === INICIALIZACIÓN DEL JUEGO ===
 function initGame() {
+    logos = getGameLogos(); // Recargar logos por si cambiaron
     gameBoard.innerHTML = '';
     shuffledLogos = logos.sort(() => 0.5 - Math.random());
     matchedPairs = 0;
@@ -287,4 +294,11 @@ function startGame() {
 }
 
 // === INICIO ===
+// Aplicar tema al cargar la página
+function applyTheme() {
+    const theme = localStorage.getItem('memoryGameTheme') || 'dark';
+    document.body.classList.toggle('light-mode', theme === 'light');
+}
+
+applyTheme();
 startGame();

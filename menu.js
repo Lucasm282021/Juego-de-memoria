@@ -3,11 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const userModal = document.getElementById('userModal');
     const userForm = document.getElementById('userForm');
     const userNameInput = document.getElementById('userName');
+    const userEmailInput = document.getElementById('userEmail');
+    const userEmailSection = document.getElementById('userEmailSection');
     const startGameLink = document.getElementById('startGameLink');
     const adminPasswordSection = document.getElementById('adminPasswordSection');
     const adminPasswordInput = document.getElementById('adminPassword');
     const submitButton = document.getElementById('submitButton');
     const closeUserModal = document.getElementById('closeUserModal');
+    const themeToggleButton = document.getElementById('themeToggleButton');
     const musicToggleButton = document.getElementById('musicToggleButton');
 
     const tablaTiemposModal = document.getElementById('tablaTiemposModal');
@@ -16,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const tablaTiemposBody = document.querySelector('#tablaTiempos tbody');
     const visitCountEl = document.getElementById('visitCount');
     const winCountEl = document.getElementById('winCount');
+
+    const instructionsModal = document.getElementById('instructionsModal');
+    const instructionsButton = document.getElementById('instructionsButton');
+    const cerrarInstructions = document.getElementById('cerrarInstructions');
 
     // --- Cargar Contadores ---
     function loadCounters() {
@@ -44,15 +51,41 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMusicButtonState();
     });
 
+    // --- Lógica de Tema (Claro/Oscuro) ---
+    function applyTheme(theme) {
+        document.body.classList.toggle('light-mode', theme === 'light');
+        localStorage.setItem('memoryGameTheme', theme);
+        updateThemeButtonState(theme);
+    }
+
+    function updateThemeButtonState(theme) {
+        if (theme === 'light') {
+            themeToggleButton.textContent = '☀️';
+            themeToggleButton.setAttribute('aria-label', 'Activar modo oscuro');
+        } else {
+            themeToggleButton.textContent = '🌙';
+            themeToggleButton.setAttribute('aria-label', 'Activar modo claro');
+        }
+    }
+
+    themeToggleButton.addEventListener('click', () => {
+        const currentTheme = localStorage.getItem('memoryGameTheme') || 'dark'; // Default a 'dark'
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
     // --- Lógica de Datos de Usuario ---
 
     // Mostrar/ocultar campo de contraseña para admin
     userNameInput.addEventListener('input', () => {
         if (userNameInput.value.trim().toLowerCase() === 'admin') {
             adminPasswordSection.style.maxHeight = '60px'; // Altura suficiente para el input
+            userEmailSection.style.maxHeight = '0';
+            userEmailInput.required = false; // No requerir email para admin
             submitButton.textContent = 'Acceder';
         } else {
             adminPasswordSection.style.maxHeight = '0';
+            userEmailSection.style.maxHeight = '60px';
+            userEmailInput.required = true; // Requerir email para jugadores
             submitButton.textContent = 'Empezar a Jugar';
         }
     });
@@ -62,12 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Siempre previene la navegación para mostrar el modal primero
         event.preventDefault();
         userModal.style.display = 'flex';
-        userNameInput.value = ''; // Limpiar campo anterior
+        userNameInput.value = 'jugador'; // Valor por defecto
+        userEmailInput.required = true; // Asegurarse de que el email sea requerido por defecto
+        userEmailSection.style.maxHeight = '60px'; // Mostrar campo de email por defecto
+        userEmailInput.value = ''; // Limpiar correo
         adminPasswordInput.value = ''; // Limpiar contraseña
         adminPasswordSection.style.maxHeight = '0'; // Ocultar campo
         submitButton.textContent = 'Empezar a Jugar';
         userNameInput.focus();
     });
+
+    // Desactivar la validación nativa del navegador para manejarla manualmente
+    userForm.setAttribute('novalidate', true);
 
     // Al enviar el formulario de datos de usuario
     userForm.addEventListener('submit', (event) => {
@@ -87,14 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Flujo normal para jugadores
-        if (!nombre) {
-            alert('Por favor, ingresa un nombre para continuar.');
+        const email = userEmailInput.value.trim();
+        if (!userNameInput.value.trim() || !email || !email.match(/^\S+@\S+\.\S+$/)) {
+            alert('Por favor, ingresa un nombre y un correo electrónico válido.');
             return;
         }
 
         const userData = {
-            nombre: nombre,
-            correo: '-', // Ya no pedimos correo, guardamos un valor por defecto
+            // Guardamos el nombre original, no en minúsculas
+            nombre: userNameInput.value.trim(),
+            correo: email,
         };
         localStorage.setItem('memoryGameUser', JSON.stringify(userData));
         userModal.style.display = 'none'; // Corregido
@@ -103,6 +144,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     closeUserModal.addEventListener('click', () => userModal.style.display = 'none');
+
+    // --- Lógica de Instrucciones ---
+    instructionsButton.addEventListener('click', () => {
+        fetch('instrucciones.md')
+            .then(response => response.text())
+            .then(text => {
+                // Convertir Markdown simple a HTML
+                let html = text
+                    .replace(/^### (.*$)/gim, '<h4>$1</h4>')
+                    .replace(/^# (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>')
+                    .replace(/^\d+\. (.*$)/gim, '<ol><li>$1</li></ol>')
+                    .replace(/<\/ul>\n<ul>/gim, '')
+                    .replace(/<\/ol>\n<ol>/gim, '');
+
+                document.getElementById('instructionsContent').innerHTML = html;
+                instructionsModal.style.display = 'flex';
+            })
+            .catch(error => {
+                console.error('Error al cargar las instrucciones:', error);
+                alert('No se pudieron cargar las instrucciones.');
+            });
+    });
+
+    cerrarInstructions.addEventListener('click', () => instructionsModal.style.display = 'none');
 
     // --- Lógica de Tabla de Tiempos ---
 
@@ -168,13 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
         tablaTiemposModal.style.display = 'none'; // Corregido
     });
 
-    // Cerrar modales al hacer clic fuera de ellos
-    window.addEventListener('click', (event) => {
-        if (event.target == tablaTiemposModal) tablaTiemposModal.style.display = 'none';
-        if (event.target == userModal) userModal.style.display = 'none';
-    });
-
     // Inicializar estado del botón de música al cargar la página
+    // Aplicar tema al cargar la página
+    const initialTheme = localStorage.getItem('memoryGameTheme') || 'dark';
+    applyTheme(initialTheme);
     updateMusicButtonState();
     // Cargar contadores al iniciar
     loadCounters();

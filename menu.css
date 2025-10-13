@@ -1,10 +1,36 @@
-/* === VARIABLES DE COLOR (tomadas de game.css) === */
+/* === VARIABLES DE COLOR === */
 :root {
+    /* Tema Oscuro (por defecto) */
     --color-bg-primary: #0f172a;
     --color-bg-secondary: #1e293b;
     --color-text-primary: #e2e8f0;
+    --color-text-secondary: #94a3b8;
     --color-accent: #38bdf8;
     --color-accent-hover: #f87171;
+    --color-success: #22c55e;
+    --color-success-hover: #16a34a;
+
+    /* Colores para modales (oscuro) */
+    --modal-bg: #ffffff;
+    --modal-text-header: #0f172a;
+    --modal-text-body: #333;
+    --modal-border-color: #e0eafc;
+    --modal-table-header-bg: #f5f8ff;
+}
+
+body.light-mode {
+    /* Tema Claro */
+    --color-bg-primary: #f0f2f5;
+    --color-bg-secondary: #ffffff;
+    --color-text-primary: #333333;
+    --color-text-secondary: #666666;
+    --color-accent: #007bff;
+    --color-accent-hover: #0056b3;
+    --color-success: #28a745;
+    --color-success-hover: #218838;
+
+    /* Colores para modales (claro) - pueden ser los mismos */
+    --modal-text-header: #333;
 }
 
 /* === ESTILOS GENERALES DEL MENÚ === */
@@ -18,6 +44,7 @@ body.main-menu {
     background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
     margin: 0;
+    padding: 20px; /* Añadir padding para que el footer no se pegue al borde */
 }
 
 .main-menu__container {
@@ -26,12 +53,22 @@ body.main-menu {
     padding: 40px 60px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative; /* Necesario para posicionar los botones de control */
 }
 
 .main-menu__title {
     font-size: 2.5rem;
     color: var(--color-accent);
     margin-bottom: 30px;
+}
+
+.main-menu__subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    opacity: 0.8;
+    margin-top: -20px;
+    margin-bottom: 30px;
+    font-weight: 400;
 }
 
 .main-menu__nav {
@@ -45,7 +82,7 @@ body.main-menu {
     padding: 15px 30px;
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--color-bg-primary);
+    color: #ffffff;
     background-color: var(--color-accent);
     border: none;
     border-radius: 8px;
@@ -64,7 +101,7 @@ body.main-menu {
     position: absolute;
     bottom: 10px;
     font-size: 0.8rem;
-    color: #94a3b8; /* Usando color de texto secundario */
+    color: var(--color-text-secondary);
     font-style: italic;
     opacity: 0.8;
 }
@@ -90,7 +127,7 @@ body.main-menu {
 }
 
 .modal-tiempos-panel {
-    background: #fff;
+    background: var(--modal-bg);
     max-width: 400px;
     width: 90%;
     margin: auto;
@@ -119,7 +156,7 @@ body.main-menu {
 
 .modal-tiempos-titulo {
     margin-bottom: 24px;
-    color: #2d3a4a;
+    color: var(--modal-text-header);
     font-weight: 600;
     font-size: 1.3em;
 }
@@ -131,13 +168,13 @@ body.main-menu {
 }
 
 .modal-tiempos-tabla th, .modal-tiempos-tabla td {
-    border-bottom: 1px solid #e0eafc;
+    border-bottom: 1px solid var(--modal-border-color);
     padding: 8px 0;
-    color: #2d3a4a;
+    color: var(--modal-text-body);
 }
 
 .modal-tiempos-tabla th {
-    background: #f5f8ff;
+    background: var(--modal-table-header-bg);
     font-weight: 500;
 }
 
@@ -147,7 +184,7 @@ body.main-menu {
 
 /* === ESTILOS PARA MODAL DE USUARIO === */
 .modal__content {
-    background-color: #ffffff;
+    background-color: var(--modal-bg);
     padding: 24px 32px;
     border-radius: 12px;
     max-width: 400px;
@@ -158,15 +195,20 @@ body.main-menu {
     position: relative; /* Para el botón de cierre */
 }
 
+/* Hacer el modal de instrucciones un poco más ancho */
+#instructionsModal .modal__content {
+    max-width: 550px;
+}
+
 .modal__content h3 {
-    color: var(--color-bg-primary);
+    color: var(--modal-text-header);
     font-size: 1.6rem;
     margin-top: 0;
     margin-bottom: 12px;
 }
 
 .modal__content p {
-    color: #555;
+    color: var(--modal-text-body);
     font-size: 1rem;
     margin-bottom: 20px;
 }
@@ -194,11 +236,11 @@ body.main-menu {
 }
 
 .modal__button--success {
-    background-color: var(--color-success, #22c55e);
+    background-color: var(--color-success);
 }
 
 .modal__button--success:hover {
-    background-color: var(--color-success-hover, #16a34a);
+    background-color: var(--color-success-hover);
 }
 
 /* Sección de contraseña de admin */
@@ -209,9 +251,19 @@ body.main-menu {
     margin: 0;
 }
 
+/* Sección de email de usuario */
+.collapsible-section {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    margin: 0;
+}
+
 /* Control de audio */
 .main-menu__audio-control {
-    margin-top: 25px;
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    margin-top: 25px; /* Espacio sobre los botones */
 }
 
 .audio-button {
@@ -226,9 +278,13 @@ body.main-menu {
     transition: all 0.3s ease;
 }
 
+.audio-button + .audio-button {
+    margin-left: 10px; /* Separación entre botones */
+}
+
 .audio-button:hover {
     background-color: var(--color-accent);
-    color: var(--color-bg-primary);
+    color: #ffffff;
     transform: scale(1.1);
 }
 
@@ -246,7 +302,7 @@ body.main-menu {
 }
 
 .main-menu__counter {
-    background-color: var(--color-bg-primary);
+    background-color: var(--color-bg-secondary);
     padding: 8px 16px;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -259,3 +315,34 @@ body.main-menu {
 /* === ANIMACIONES (si no existen ya) === */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Estilos para el contenido de las instrucciones */
+.instructions-text {
+    text-align: left;
+    white-space: pre-wrap; /* Respeta los saltos de línea del .txt */
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--modal-text-body);
+    max-height: 60vh; /* Evita que el modal sea demasiado alto */
+    overflow-y: auto; /* Añade scroll si el contenido es muy largo */
+    padding-right: 10px; /* Espacio para la barra de scroll */
+}
+.instructions-text h2 {
+    font-size: 1.2rem;
+    color: var(--modal-text-header);
+    margin-top: 0;
+}
+.instructions-text h4 {
+    font-size: 1.1rem;
+    color: var(--modal-text-header);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.instructions-text ul, .instructions-text ol {
+    padding-left: 20px;
+}
+
+.instructions-text strong {
+    color: var(--modal-text-header);
+    font-weight: 700;
+}

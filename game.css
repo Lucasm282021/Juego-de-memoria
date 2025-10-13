@@ -1,21 +1,35 @@
 /* === VARIABLES DE COLOR === */
 :root {
+    /* Tema Oscuro (por defecto) */
     --color-bg-primary: #0f172a;
     --color-bg-secondary: #1e293b;
-    --color-bg-light: #f9f9f9;
-
     --color-text-primary: #e2e8f0;
     --color-text-secondary: #94a3b8;
-    --color-text-muted: #555;
 
     --color-accent: #38bdf8;
     --color-accent-hover: #f87171;
     --color-success: #22c55e;
-    --color-success-hover: #16a34a;
     --color-danger: #ef4444;
 
-    --color-border: #000000;
-    --color-border-light: #ddd;
+    --card-front-bg: var(--color-bg-secondary);
+    --card-front-text: var(--color-accent);
+    --card-back-bg: #ffffff;
+    --card-border: #000000;
+
+    --modal-bg: #ffffff;
+    --modal-text: #333;
+}
+
+body.light-mode {
+    /* Tema Claro */
+    --color-bg-primary: #f0f2f5;
+    --color-bg-secondary: #e9ecef;
+    --color-text-primary: #333333;
+    --color-text-secondary: #666666;
+    --color-accent: #007bff;
+    --color-accent-hover: #0056b3;
+    --card-front-bg: var(--color-bg-secondary);
+    --card-front-text: var(--color-accent);
 }
 
 /* === CLASE GLOBAL NO-SELECT === */
@@ -36,7 +50,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     background: var(--color-bg-primary);
     color: var(--color-text-primary);
     margin: 0;
@@ -72,7 +86,7 @@
 
 .game-header__menu-button {
     background-color: var(--color-accent);
-    color: var(--color-bg-primary);
+    color: #ffffff;
     border: none;
     padding: 0.8rem 1.6rem;
     border-radius: 8px;
@@ -80,7 +94,12 @@
     font-size: 1.2rem;
     font-weight: 600;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.game-header__menu-button:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
 }
 
 /* === MAIN LAYOUT === */
@@ -138,24 +157,24 @@
 }
 
 .memory-card__front {
-    background-color: var(--color-bg-secondary);
+    background-color: #1e293b; /* Forzar fondo oscuro */
     font-size: 4rem;
-    color: var(--color-accent);
-    border: 2px solid var(--color-border);
+    color: #38bdf8; /* Forzar color de texto de acento oscuro */
+    border: 2px solid var(--card-border);
 }
 
 .memory-card__back {
-    background-color: #ffffff;
+    background-color: var(--card-back-bg);
     transform: rotateY(180deg);
-    border: 2px solid var(--color-border);
+    border: 2px solid var(--card-border);
 }
 
 .memory-card__fron_image {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background-color: var(--color-bg-light);
-    border: 2px solid var(--color-border);
+    background-color: var(--card-back-bg);
+    border: 2px solid var(--card-border);
     border-radius: 12px;
     padding: 1px;
     box-sizing: border-box;
@@ -164,8 +183,8 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background-color: #ffffff;
-    border: 2px solid var(--color-border);
+    background-color: var(--card-back-bg);
+    border: 2px solid var(--card-border);
     border-radius: 12px;
     padding: 6px;
     box-sizing: border-box;
@@ -186,47 +205,6 @@
     border-radius: 8px;
     font-weight: bold;
     border: 1px solid var(--color-accent);
-}
-
-/* === BOTONES === */
-.memory-game__controls {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.memory-game__start-button {
-    background-color: var(--color-success);
-    color: var(--color-bg-primary);
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.memory-game__start-button:hover {
-    background-color: var(--color-success-hover);
-    color: #fff;
-}
-
-.memory-game__reset-button,
-.memory-game__tabla-button {
-    background-color: var(--color-accent);
-    color: var(--color-bg-primary);
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.memory-game__reset-button:hover,
-.game-header__menu-button:hover {
-    background-color: var(--color-accent-hover);
-    color: #fff;
 }
 
 /* === MODAL TIEMPOS === */
@@ -312,7 +290,7 @@
 
 /* === CONTENIDO DEL MODAL === */
 .modal__content {
-    background-color: #ffffff;
+    background-color: var(--modal-bg);
     padding: 24px 32px;
     border-radius: 12px;
     max-width: 400px;
@@ -324,19 +302,20 @@
 
 /* === TITULOS === */
 #loseTitle {
-    color: #ef4444; /* rojo derrota */
+    color: var(--color-danger); /* rojo derrota */
     font-size: 1.6rem;
     margin-bottom: 12px;
 }
 
 #winTitle {
-    color: #22c55e; /* verde victoria */
+    color: var(--color-success); /* verde victoria */
     font-size: 1.6rem;
     margin-bottom: 12px;
 }
 
 /* === MENSAJE === */
 #winMessage {
+    color: var(--modal-text);
     font-size: 1rem;
     margin-bottom: 20px;
     white-space: pre-line;
@@ -349,14 +328,14 @@
     font-size: 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #3b82f6;
+    background-color: var(--color-accent);
     color: #ffffff;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .modal__content button:hover {
-    background-color: #2563eb;
+    background-color: var(--color-accent-hover);
 }
 /* === RESALTADO DE TIEMPO Y POSICIÓN === */
 .win-highlight {

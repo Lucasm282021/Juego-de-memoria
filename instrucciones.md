@@ -1,0 +1,17 @@
+# Instrucciones del Juego de Memoria
+
+¡Bienvenido al Juego de Memoria! El objetivo es simple: encontrar todos los pares de imágenes idénticas antes de que se acabe el tiempo.
+
+### ¿Cómo jugar?
+1.  **Inicia un Nuevo Juego:** Desde el menú principal, ingresa tu nombre y haz clic en "Empezar a Jugar".
+2.  **Voltea las Cartas:** Haz clic en una carta para revelar la imagen que oculta.
+3.  **Busca el Par:** Haz clic en una segunda carta.
+    *   Si las imágenes coinciden, ¡has encontrado un par! Las cartas permanecerán boca arriba.
+    *   Si no coinciden, las cartas se volverán a voltear. ¡Intenta recordar dónde estaba cada imagen!
+
+### El Cronómetro
+*   El juego tiene un cronómetro con cuenta regresiva. Debes encontrar todos los pares antes de que el tiempo llegue a cero.
+*   Tu puntuación en el ranking se basa en el tiempo que te sobre. ¡Mientras más rápido seas, mejor!
+
+### ¡A Jugar!
+Concéntrate, memoriza y diviértete. ¡Mucha suerte!

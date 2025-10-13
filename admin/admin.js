@@ -5,11 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const winsCount = document.getElementById('winsCount');
     const tablaBody = document.querySelector('#tablaParticipantes tbody');
     const gameTimeInput = document.getElementById('gameTime');
+    const alertTimeInput = document.getElementById('alertTime');
     const saveChangesBtn = document.getElementById('saveChangesBtn');
     const passwordConfirmModal = document.getElementById('passwordConfirmModal');
     const passwordConfirmForm = document.getElementById('passwordConfirmForm');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const closePasswordModal = document.getElementById('closePasswordModal');
+    const imageManagementGrid = document.getElementById('imageManagementGrid');
+    const imageUploader = document.getElementById('imageUploader');
 
     // === FUNCIONES AUXILIARES ===
     function showStatus(message, type = 'success') {
@@ -29,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadInitialGameTime() {
         if (localStorage.getItem('memoryGameTime')) {
             gameTimeInput.value = localStorage.getItem('memoryGameTime');
+        }
+        if (localStorage.getItem('memoryGameAlertTime')) {
+            alertTimeInput.value = localStorage.getItem('memoryGameAlertTime');
         }
     }
 
@@ -66,6 +72,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // === LÓGICA DE IMÁGENES ===
+    function mostrarImagenesJuego() {
+        imageManagementGrid.innerHTML = '';
+        const defaultImages = [
+            'Del_Click.png', 'Ransomware.png', 'ISFDyT26.png', 'Phishing.png',
+            'LogoDS.png', 'Scareware.png', 'Spyware.png', 'Spoofing.png'
+        ];
+        const images = JSON.parse(localStorage.getItem('memoryGameImages')) || defaultImages;
+
+        images.forEach((imageName, index) => {
+            const imageCard = document.createElement('div');
+            imageCard.className = 'image-card';
+            imageCard.innerHTML = `
+                <img src="../logos/${imageName}" alt="${imageName}" class="image-card__preview">
+                <input type="text" value="${imageName}" class="image-card__input" data-index="${index}" readonly>
+                <button class="image-card__change-btn" data-index="${index}">Cambiar</button>
+            `;
+            imageManagementGrid.appendChild(imageCard);
+        });
+
+        // Si era la primera vez, guardar las imágenes por defecto
+        if (!localStorage.getItem('memoryGameImages')) {
+            localStorage.setItem('memoryGameImages', JSON.stringify(images));
+        }
+    }
+
+    // --- LÓGICA DE CAMBIO DE IMAGEN ---
+    let activeImageInput = null;
+    let activeImagePreview = null;
+
+    imageManagementGrid.addEventListener('click', (e) => {
+        if (e.target.classList.contains('image-card__change-btn')) {
+            const index = e.target.dataset.index;
+            activeImageInput = document.querySelector(`.image-card__input[data-index="${index}"]`);
+            activeImagePreview = e.target.closest('.image-card').querySelector('.image-card__preview');
+            imageUploader.click(); // Abre el explorador de archivos
+        }
+    });
+
+    imageUploader.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file && activeImageInput && activeImagePreview) {
+            activeImageInput.value = file.name;
+            activeImagePreview.src = URL.createObjectURL(file);
+        }
+    });
+
     // === EVENT LISTENERS ===
     document.getElementById('returnGame').addEventListener('click', () => {
         window.location.href = '../index.html';
@@ -100,14 +153,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DE GUARDAR CAMBIOS ---
     function applyChanges() {
-        // Por ahora, solo guarda el tiempo del juego. Se puede expandir.
+        // Guardar tiempo de juego
         let tiempo = parseInt(gameTimeInput.value);
         if (isNaN(tiempo) || tiempo < 10 || tiempo > 300) {
             showStatus('El tiempo debe estar entre 10 y 300 segundos.', 'error');
             return;
         }
         localStorage.setItem('memoryGameTime', tiempo);
+
+        // Guardar tiempo de alerta
+        let tiempoAlerta = parseInt(alertTimeInput.value);
+        if (isNaN(tiempoAlerta) || tiempoAlerta < 1 || tiempoAlerta > 60) {
+            showStatus('El tiempo de alerta debe estar entre 1 y 60 segundos.', 'error');
+            return;
+        }
+        localStorage.setItem('memoryGameAlertTime', tiempoAlerta);
+
+        // Guardar nombres de imágenes
+        const imageInputs = document.querySelectorAll('.image-card__input');
+        const newImages = [];
+        imageInputs.forEach(input => {
+            newImages.push(input.value);
+        });
+        localStorage.setItem('memoryGameImages', JSON.stringify(newImages));
+
         showStatus('Cambios guardados correctamente.', 'success');
+        mostrarImagenesJuego(); // Refrescar la vista de imágenes
     }
 
     saveChangesBtn.addEventListener('click', () => {
@@ -168,7 +239,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // === INICIALIZACIÓN ===
+    function applyTheme() {
+        const theme = localStorage.getItem('memoryGameTheme') || 'dark';
+        document.body.classList.toggle('light-mode', theme === 'light');
+    }
+
+    applyTheme();
     updateCounters();
     mostrarTablaParticipantes();
+    mostrarImagenesJuego();
     loadInitialGameTime();
 });

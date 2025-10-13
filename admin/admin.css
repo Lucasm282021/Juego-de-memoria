@@ -1,6 +1,6 @@
 /* === VARIABLES & ESTILOS GLOBALES === */
 :root {
-    /* Tema Oscuro */
+    /* Tema Oscuro (por defecto) */
     --admin-bg: #0f172a;
     --admin-card-bg: #1e293b;
     --admin-text-primary: #e2e8f0;
@@ -42,13 +42,14 @@ body {
 
 .admin-panel__layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: 1fr; /* Cambiado para tener una sola columna */
     gap: 1.5rem;
 }
 
 /* Diseño de tarjetas para cada sección */
 .admin-panel__actions,
 .admin-panel__counters,
+.admin-panel__images,
 .admin-panel__table {
     background-color: var(--admin-card-bg);
     border-radius: 12px;
@@ -58,9 +59,7 @@ body {
 }
 
 /* La tabla ocupa todo el ancho en la siguiente fila */
-.admin-panel__table {
-    grid-column: 1 / -1;
-}
+/* .admin-panel__table { grid-column: 1 / -1; } -> Ya no es necesario con una sola columna */
 
 .admin-panel__section-title {
     font-size: 1.5rem;
@@ -122,6 +121,14 @@ body {
     background-color: var(--admin-danger-hover);
 }
 
+#saveChangesBtn {
+    background-color: var(--admin-success-color);
+    color: #fff;
+}
+#saveChangesBtn:hover {
+    background-color: var(--admin-success-hover);
+}
+
 #exportExcel {
     background-color: var(--admin-success-color);
     color: #fff;
@@ -179,33 +186,23 @@ body {
 
 .admin-panel__game-time div {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
 }
 
+.admin-panel__game-time label {
+    font-weight: 500;
+    color: var(--admin-text-secondary);
+}
+
 .admin-panel__game-time input[type="number"] {
-    flex-grow: 1;
     padding: 8px 12px;
+    max-width: 100px; /* Limita el ancho del input */
     border: 1px solid var(--admin-border-color);
     border-radius: 6px;
     background-color: var(--admin-bg);
     color: var(--admin-text-primary);
     font-size: 1rem;
-}
-
-.admin-panel__game-time button {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border-radius: 6px;
-    background-color: var(--admin-primary-color);
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.admin-panel__game-time button:hover {
-    background-color: var(--admin-primary-hover);
 }
 
 /* === TABLA DE PARTICIPANTES === */
@@ -232,18 +229,18 @@ body {
 .admin-panel__table th {
     background-color: var(--admin-bg);
     font-weight: 600;
-    color: var(--admin-text-secondary);
+    color: var(--admin-text-primary);
     position: sticky;
     top: 0;
     z-index: 1;
 }
 
 .admin-panel__table tbody tr:nth-child(even) {
-    background-color: #2a3a50; /* Un poco más claro que el fondo de la tarjeta */
+    background-color: rgba(0,0,0,0.02); /* Sombreado sutil para filas pares */
 }
 
 .admin-panel__table tbody tr:hover {
-    background-color: #334155;
+    background-color: rgba(0,0,0,0.05); /* Sombreado sutil para hover */
 }
 
 /* === MENSAJE DE ESTADO (Toast-like) === */
@@ -367,4 +364,61 @@ body {
 
 .modal__button--success:hover {
     background-color: var(--admin-success-hover);
+}
+
+/* === SECCIÓN DE GESTIÓN DE IMÁGENES === */
+.image-management-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 columnas para que entren en una fila */
+    gap: 0.5rem; /* Reducir el espacio entre imágenes */
+}
+
+.image-card {
+    background-color: var(--admin-bg);
+    border: 1px solid var(--admin-border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    padding-bottom: 1rem;
+    text-align: center;
+}
+
+.image-card__preview {
+    width: 100%;
+    height: 70px; /* Reducir la altura de la previsualización */
+    object-fit: contain;
+    background-color: #fff;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.image-card__input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--admin-border-color);
+    background-color: var(--admin-card-bg);
+    color: var(--admin-text-primary);
+    text-align: center;
+}
+
+.image-card__change-btn {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--admin-primary-color);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.image-card__change-btn:hover {
+    background-color: var(--admin-primary-hover);
 }

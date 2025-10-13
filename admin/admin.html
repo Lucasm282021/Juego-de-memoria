@@ -22,14 +22,18 @@
                 <button id="resetAll" type="button">Resetear Todo</button>
                 <button id="deleteTable" type="button">Borrar Tabla</button>
                 <button id="exportExcel" type="button">Exportar Tabla a Excel</button>
+                <button id="saveChangesBtn" type="button">Guardar Cambios</button>
                 <button id="returnGame" type="button">Volver al juego</button>
             </div>
             <fieldset class="admin-panel__game-time">
-                <legend>Tiempo de juego (segundos)</legend>
-                <label for="gameTime">Duración:</label>
+                <legend>Configuración del Juego</legend>
                 <div>
+                    <label for="gameTime">Duración (seg):</label>
                     <input type="number" id="gameTime" name="gameTime" min="10" max="300" value="30" />
-                    <button id="saveChangesBtn" type="button">Guardar Cambios</button>
+                </div>
+                <div>
+                    <label for="alertTime">Alerta (seg):</label>
+                    <input type="number" id="alertTime" name="alertTime" min="1" max="60" value="5" />
                 </div>
             </fieldset>
         </section>
@@ -41,6 +45,12 @@
             <li>Visitas: <span id="visitsCount">0</span></li>
             <li>Victorias: <span id="winsCount">0</span></li>
             </ul>
+        </section>
+
+        <!-- Gestión de Imágenes -->
+        <section class="admin-panel__images" aria-labelledby="imagenesTitulo">
+            <h2 id="imagenesTitulo" class="admin-panel__section-title">Imágenes del Juego</h2>
+            <div id="imageManagementGrid" class="image-management-grid"></div>
         </section>
 
         <!-- Tabla de participantes -->
@@ -66,6 +76,9 @@
         <!-- Mensaje de estado -->
         <div class="admin-panel__status" id="statusMsg" aria-live="polite" role="status"></div>
     </main>
+
+    <!-- Input de archivo oculto para la selección de imágenes -->
+    <input type="file" id="imageUploader" accept="image/png, image/jpeg, image/gif, image/svg+xml" style="display: none;">
 
     <!-- Modal de confirmación de contraseña -->
     <div id="passwordConfirmModal" class="modal">
