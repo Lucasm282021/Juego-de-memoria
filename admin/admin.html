@@ -16,15 +16,18 @@
         <!-- Acciones administrativas -->
         <section class="admin-panel__actions" aria-labelledby="accionesTitulo">
             <h2 id="accionesTitulo" class="admin-panel__section-title">Acciones</h2>
-            <div class="admin-panel__buttons">
-                <button id="resetVisits" type="button">Resetear Visitas</button>
-                <button id="resetWins" type="button">Resetear Victorias</button>
-                <button id="resetAll" type="button">Resetear Todo</button>
-                <button id="deleteTable" type="button">Borrar Tabla</button>
-                <button id="exportExcel" type="button">Exportar Tabla a Excel</button>
-                <button id="saveChangesBtn" type="button">Guardar Cambios</button>
-                <button id="returnGame" type="button">Volver al juego</button>
+            <div class="admin-panel__buttons-grid">
+                <button id="resetVisits" type="button" aria-label="Resetear contador de visitas">Resetear Visitas</button>
+                <button id="resetWins" type="button" aria-label="Resetear contador de victorias">Resetear Victorias</button>
+                <button id="resetAll" type="button" aria-label="Resetear todos los contadores">Resetear Todo</button>
+                <button id="deleteTable" type="button" aria-label="Borrar tabla de tiempos">Borrar Tabla</button>
+                <button id="exportExcel" type="button" aria-label="Exportar tabla a formato CSV">Exportar Tabla a Excel</button>
+                <button id="saveChangesBtn" type="button" aria-label="Guardar cambios de configuración">Guardar Cambios</button>
+                <button id="returnGame" type="button" aria-label="Volver al menú principal del juego">Volver al juego</button>
             </div>
+        </section>
+        <section class="admin-panel__config" aria-labelledby="configTitulo">
+            <h2 id="configTitulo" class="admin-panel__section-title">Configuración</h2>
             <fieldset class="admin-panel__game-time">
                 <legend>Configuración del Juego</legend>
                 <div>

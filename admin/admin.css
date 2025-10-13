@@ -28,7 +28,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 1rem; /* Padding vertical y un poco horizontal */
+    padding: 1.5rem; /* Padding consistente */
 }
 
 /* === LAYOUT PRINCIPAL === */
@@ -43,7 +43,7 @@ body {
 }
 
 .admin-panel__title {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 6vw, 2.5rem); /* Escala con el viewport */
     font-weight: 700;
     color: var(--admin-text-primary);
 }
@@ -55,7 +55,7 @@ body {
 }
 
 .admin-panel__section-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 4vw, 1.5rem); /* Escala con el viewport */
     font-weight: 600;
     color: var(--admin-text-primary);
     margin-top: 0;
@@ -68,7 +68,8 @@ body {
 .admin-panel__actions,
 .admin-panel__counters,
 .admin-panel__images,
-.admin-panel__table {
+.admin-panel__table,
+.admin-panel__config {
     background-color: var(--admin-card-bg);
     border-radius: 12px;
     padding: 1.5rem;
@@ -76,14 +77,14 @@ body {
 }
 
 /* === SECCIÓN DE ACCIONES Y BOTONES === */
-.admin-panel__buttons {
+.admin-panel__buttons-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
 }
 
 .admin-panel__buttons button {
-    padding: 12px 15px;
+    padding: 10px 15px;
     font-size: 0.9rem;
     font-weight: 600;
     border-radius: 8px;
@@ -157,7 +158,7 @@ body {
 }
 
 .admin-panel__stats li {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem); /* Escala con el viewport */
     font-weight: 500;
     color: var(--admin-text-secondary);
     margin-bottom: 1rem;
@@ -282,37 +283,10 @@ body {
     background-color: var(--admin-danger-color);
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-    body {
-        padding: 1rem;
-    }
-    .admin-panel__title {
-        font-size: 2rem;
-    }
-    .admin-panel__layout {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    .admin-panel__actions, .admin-panel__counters, .admin-panel__images, .admin-panel__table {
-        padding: 1rem;
-    }
-    .admin-panel__buttons {
-        /* La grilla ya es responsive, no se necesita cambio específico */
-    }
-    .admin-panel__game-time div {
-        flex-direction: column; /* Apila label e input verticalmente */
-        align-items: flex-start;
-    }
-    .admin-panel__game-time input[type="number"] {
-        width: 100%; /* El input ocupa todo el ancho disponible */
-        max-width: none; /* Se anula el max-width de escritorio */
-        box-sizing: border-box;
-    }
-    .admin-panel__table-wrapper {
-        overflow-x: auto; /* Permite scroll horizontal en la tabla */
-    }
+.admin-panel__table-wrapper {
+    overflow-x: auto; /* Permite scroll horizontal en la tabla en cualquier tamaño */
 }
+
 .modal {
     display: none;
     position: fixed;
@@ -394,7 +368,7 @@ body {
 /* === SECCIÓN DE GESTIÓN DE IMÁGENES === */
 .image-management-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Responsive por defecto */
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Aumentamos el mínimo para mejor visualización */
     gap: 0.5rem; /* Reducir el espacio entre imágenes */
 }
 
@@ -446,4 +420,15 @@ body {
 }
 .image-card__change-btn:hover {
     background-color: var(--admin-primary-hover);
+}
+
+/* === RESPONSIVE PARA ESCRITORIO (Layout de 2 columnas) === */
+@media (min-width: 992px) {
+    .admin-panel__layout {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start; /* Alinea las tarjetas al inicio de su celda */
+    }
+    .admin-panel__table {
+        grid-column: 1 / -1; /* La tabla ocupa todo el ancho */
+    }
 }
