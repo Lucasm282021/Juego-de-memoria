@@ -404,6 +404,12 @@ body {
 .image-card__change-btn:hover {
     background-color: var(--admin-primary-hover);
 }
+/* === RESPONSIVE PARA MÓVILES PEQUEÑOS === */
+@media (max-width: 480px) {
+    .admin-panel__buttons-grid {
+        grid-template-columns: 1fr; /* Fuerza una sola columna para los botones */
+    }
+}
 
 /* === RESPONSIVE PARA ESCRITORIO (Layout de 2 columnas) === */
 @media (min-width: 992px) {
