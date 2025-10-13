@@ -79,27 +79,19 @@ body {
 /* === SECCIÓN DE ACCIONES Y BOTONES === */
 .admin-panel__buttons-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 1rem;
 }
 
 .admin-panel__buttons button {
     padding: 10px 15px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: none;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-}
-
-.admin-panel__buttons button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 .admin-panel__buttons button:active {
@@ -108,14 +100,9 @@ body {
 }
 
 /* Estilos específicos de botones */
-#resetVisits, #resetWins, #resetAll {
-    background-color: transparent;
-    color: var(--admin-text-secondary);
-    border-color: var(--admin-border-color);
-}
-#resetVisits:hover, #resetWins:hover, #resetAll:hover {
-    background-color: var(--admin-border-color);
-    color: var(--admin-text-primary);
+#resetVisits, #resetWins, #resetAll, #returnGame {
+    background-color: var(--admin-primary-color);
+    color: #fff;
 }
 
 #deleteTable {
@@ -142,11 +129,7 @@ body {
     background-color: var(--admin-success-hover);
 }
 
-#returnGame {
-    background-color: var(--admin-primary-color);
-    color: #fff;
-}
-#returnGame:hover {
+#resetVisits:hover, #resetWins:hover, #resetAll:hover, #returnGame:hover {
     background-color: var(--admin-primary-hover);
 }
 
